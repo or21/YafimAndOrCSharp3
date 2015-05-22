@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
     class Truk : Vehicle
     {
-        private bool isCarryingDangerous;
-        private float currentCarryWeight;
+        private bool i_isCarryingDanerous;
+        private float m_currentCarryWeight;
 
-        public Truk(string manufacturer, string id, bool isCarryingDanerous, float currentCarryWeight)
+        public Truk(string manufacturer, string id, bool i_IsCarryingDanerous, float currentCarryWeight)
         {
             this.manufacturer = manufacturer;
             this.id = id;
@@ -23,23 +19,24 @@ namespace Ex03.GarageLogic
                 wheel.Inflate(25);
             }
 
+            // TODO: define power source and fill
             //this.powerSource = new Fuel();
             //this.maxPower = this.fillPower(float 170, Fuel.Solar);
             this.powerSourceLeft = maxPower;
 
             // Set additional unique properties
-            this.isCarryingDangerous = isCarryingDanerous;
-            this.currentCarryWeight = currentCarryWeight;
+            this.i_isCarryingDanerous = i_isCarryingDanerous;
+            this.m_currentCarryWeight = currentCarryWeight;
         }
 
         public float CurretCarryWeight
         {
-            get { return this.currentCarryWeight; }
+            get { return this.m_currentCarryWeight; }
         }
 
         public bool IsCarryingDangerous
         {
-            get { return this.isCarryingDangerous; }
+            get { return this.m_IsCarryingDangerous; }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Ex03.GarageLogic
                 // TODO: handle error to much air to add --> ValueOutOfRangeException
             }
             
-            currentTirePressure = airToAdd;
+            this.currentTirePressure = airToAdd;
         }
 
         public string Manufacturer

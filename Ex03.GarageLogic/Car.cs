@@ -8,7 +8,7 @@ namespace Ex03.GarageLogic
 {
     class Car : Vehicle
     {
-        private Color _iColor;
+        private Color m_Color;
         private int m_numberOfDoors;
 
         public Car(string i_Manufacturer, string i_Id, Color i_Color, int i_NumberOfDoors, bool i_IsElectric)
@@ -23,12 +23,13 @@ namespace Ex03.GarageLogic
                 wheel.Inflate(31);
             }
 
+            // TODO: define power source and fill
             //this.powerSource = (i_IsElectric) new Electric() : new Fuel();
             //this.maxPower = (i_IsElectric) ? (float)2.2 : this.fillPower(float 35, Fuel.Octan96);
             this.powerSourceLeft = maxPower;
 
             // Set additional unique properties
-            this._iColor = i_Color;
+            this.m_Color = i_Color;
             this.m_numberOfDoors = i_NumberOfDoors;
 
         }
@@ -39,9 +40,9 @@ namespace Ex03.GarageLogic
             get { return this.m_numberOfDoors; }
         }
 
-        public Color IColor
+        public Color Color
         {
-            get { return this._iColor; }
+            get { return this.m_Color; }
         }
 
 
