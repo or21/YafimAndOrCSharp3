@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
             }
 
             // TODO: define power source and fill
-            //this.powerSource = new Fuel();
+            this.powerSource = new Fuel(170, Fuel.eFuelType.Solar);
             //this.maxPower = this.fillPower(float 170, Fuel.Solar);
             this.powerSourceLeft = maxPower;
 

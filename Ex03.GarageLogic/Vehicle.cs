@@ -28,7 +28,7 @@ namespace Ex03.GarageLogic
         {
             if (airToAdd > this.maxTirePressure)
             {
-                // TODO: handle error to much air to add --> ValueOutOfRangeException
+                // TODO: handle error "to much air to add" --> ValueOutOfRangeException
             }
             
             this.currentTirePressure = airToAdd;
