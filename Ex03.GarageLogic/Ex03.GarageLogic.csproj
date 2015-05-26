@@ -38,6 +38,7 @@
     <Compile Include="Car.cs" />
     <Compile Include="Energy.cs" />
     <Compile Include="Fuel.cs" />
+    <Compile Include="Garage.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Truk.cs" />
     <Compile Include="Vehicle.cs" />
