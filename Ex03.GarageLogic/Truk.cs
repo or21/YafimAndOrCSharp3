@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
         private bool i_isCarryingDanerous;
         private float m_currentCarryWeight;
 
-        public Truk(string manufacturer, string id, bool i_IsCarryingDanerous, float currentCarryWeight)
+        public Truk(string manufacturer, string id, bool i_IsCarryingDanerous, float currentCarryWeight, float i_CurrentAmount)
         {
             this.manufacturer = manufacturer;
             this.id = id;
@@ -16,13 +16,12 @@ namespace Ex03.GarageLogic
             foreach (Wheel wheel in wheels)
             {
                 wheel.MaxTirePressure = (float)25;
-                wheel.Inflate(25);
+                wheel.Inflate(wheel.MaxTirePressure);
             }
 
-            // TODO: define power source and fill
-            this.powerSource = new Fuel(170, Fuel.eFuelType.Solar);
-            //this.maxPower = this.fillPower(float 170, Fuel.Solar);
-            this.powerSourceLeft = maxPower;
+            
+            this.powerSource = new Fuel(i_CurrentAmount, 170, Fuel.eFuelType.Solar);
+            this.powerSourceLeft = maxPower - i_CurrentAmount;
 
             // Set additional unique properties
             this.i_isCarryingDanerous = i_isCarryingDanerous;

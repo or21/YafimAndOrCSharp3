@@ -7,21 +7,27 @@ namespace Ex03.GarageLogic
         private License m_License;
         private int m_Engine;
 
-        public Motor(string manufacturer, string id, bool isElectric, License i_License, int i_Engine)
+        public Motor(string manufacturer, string id, bool i_IsElectric, License i_License, int i_Engine, float i_CurrentAmount)
         {
             this.id = id;
             this.manufacturer = manufacturer;
 
-            // TODO: define power source and fill
-            //this.powerSource = (isElectric) new Electric() : new Fuel();
-            //this.maxPower = (isElectric) ? (float)2.2 : this.fillPower(float 8, Fuel.Octan98);
-            this.powerSourceLeft = maxPower;
+            this.powerSource = (i_IsElectric) ? new Energy(i_CurrentAmount, (float)1.2) : new Fuel(i_CurrentAmount, 8, Fuel.eFuelType.Octan98);
+            this.powerSourceLeft = maxPower - i_CurrentAmount;
 
             this.wheels = new List<Wheel>(2);
             foreach (Wheel wheel in wheels)
             {
-                wheel.MaxTirePressure = (float)2;
-                wheel.Inflate(2);
+                if (i_IsElectric)
+                {
+                    wheel.MaxTirePressure = (float) 31;
+                    wheel.Inflate(wheel.MaxTirePressure);
+                }
+                else
+                {
+                    wheel.MaxTirePressure = (float)34;
+                    wheel.Inflate(wheel.MaxTirePressure);
+                }
             }
 
             // Set additional unique properties

@@ -11,22 +11,20 @@ namespace Ex03.GarageLogic
         private Color m_Color;
         private int m_numberOfDoors;
 
-        public Car(string i_Manufacturer, string i_Id, Color i_Color, int i_NumberOfDoors, bool i_IsElectric)
+        public Car(string i_Manufacturer, string i_Id, Color i_Color, int i_NumberOfDoors, bool i_IsElectric, float i_CurrentAmount)
         {
             this.manufacturer = i_Manufacturer;
             this.id = i_Id;
+
+            this.powerSource = (i_IsElectric) ? new Energy(i_CurrentAmount, (float)2.2) : new Fuel(i_CurrentAmount, 35, Fuel.eFuelType.Octan96);
+            this.powerSourceLeft = maxPower - i_CurrentAmount;
 
             this.wheels = new List<Wheel>(4);
             foreach (Wheel wheel in wheels)
             {
                 wheel.MaxTirePressure = (float)31;
-                wheel.Inflate(31);
+                wheel.Inflate(wheel.MaxTirePressure);
             }
-
-            // TODO: define power source and fill
-            //this.powerSource = (i_IsElectric) new Electric() : new Fuel();
-            //this.maxPower = (i_IsElectric) ? (float)2.2 : this.fillPower(float 35, Fuel.Octan96);
-            this.powerSourceLeft = maxPower;
 
             // Set additional unique properties
             this.m_Color = i_Color;
