@@ -36,7 +36,7 @@ namespace Ex03.GarageLogic
 
         public string Manufacturer
         {
-            get { return manufacturer;}
+            get { return manufacturer; }
             set { this.manufacturer = value; }
         }
 
