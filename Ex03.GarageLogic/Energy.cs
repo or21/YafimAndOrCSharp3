@@ -12,6 +12,11 @@ namespace Ex03.GarageLogic
         private float currentAmount;
         private readonly float r_MaxAmount;
 
+        public static  
+        {
+            
+        }
+
         public Energy(float i_CurrentAmount, float i_MaxAmount)
         {
             this.currentAmount = i_CurrentAmount;
