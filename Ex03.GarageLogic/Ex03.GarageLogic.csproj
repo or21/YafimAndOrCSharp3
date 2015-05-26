@@ -36,9 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Car.cs" />
+    <Compile Include="Energy.cs" />
     <Compile Include="Fuel.cs" />
     <Compile Include="Motor.cs" />
-    <Compile Include="TestClass.cs" />
     <Compile Include="Truk.cs" />
     <Compile Include="Vehicle.cs" />
   </ItemGroup>
