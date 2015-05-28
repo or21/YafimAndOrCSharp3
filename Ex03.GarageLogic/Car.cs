@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    class Car : Vehicle
+    public class Car : Vehicle
     {
-        private Color m_Color;
+        private eColor m_color;
         private int m_numberOfDoors;
 
-        public Car(string i_Manufacturer, string i_Id, Color i_Color, int i_NumberOfDoors, bool i_IsElectric, float i_CurrentAmount)
+        public Car(string i_Manufacturer, string i_Id, eColor i_Color, int i_NumberOfDoors, bool i_IsElectric, float i_CurrentAmount)
         {
             this.manufacturer = i_Manufacturer;
             this.id = i_Id;
 
-            this.powerSource = (i_IsElectric) ? new Energy(i_CurrentAmount, (float)2.2) : new Fuel(i_CurrentAmount, 35, Fuel.eFuelType.Octan96);
+            this.powerSource = i_IsElectric ? new Energy(i_CurrentAmount, (float)2.2) : new Fuel(i_CurrentAmount, 35, Fuel.eFuelType.Octan96);
             this.powerSourceLeft = maxPower - i_CurrentAmount;
 
             this.wheels = new List<Wheel>(4);
@@ -27,33 +24,26 @@ namespace Ex03.GarageLogic
             }
 
             // Set additional unique properties
-            this.m_Color = i_Color;
+            this.m_color = i_Color;
             this.m_numberOfDoors = i_NumberOfDoors;
-
         }
-
 
         public int Doors 
         {
             get { return this.m_numberOfDoors; }
         }
 
-        public Color Color
+        public eColor Color
         {
-            get { return this.m_Color; }
+            get { return this.m_color; }
         }
-
-
     }
 
-    internal enum Color
+    public enum eColor
     {
         Green,
-
         Black,
-
         Red,
-
         White
-    };
+    }
 }

@@ -2,17 +2,17 @@
 
 namespace Ex03.GarageLogic
 {
-    class Motor : Vehicle
+    public class Motor : Vehicle
     {
-        private License m_License;
-        private int m_Engine;
+        private License m_license;
+        private int m_engine;
 
         public Motor(string manufacturer, string id, bool i_IsElectric, License i_License, int i_Engine, float i_CurrentAmount)
         {
             this.id = id;
             this.manufacturer = manufacturer;
 
-            this.powerSource = (i_IsElectric) ? new Energy(i_CurrentAmount, (float)1.2) : new Fuel(i_CurrentAmount, 8, Fuel.eFuelType.Octan98);
+            this.powerSource = i_IsElectric ? new Energy(i_CurrentAmount, (float)1.2) : new Fuel(i_CurrentAmount, 8, Fuel.eFuelType.Octan98);
             this.powerSourceLeft = maxPower - i_CurrentAmount;
 
             this.wheels = new List<Wheel>(2);
@@ -31,22 +31,22 @@ namespace Ex03.GarageLogic
             }
 
             // Set additional unique properties
-            this.m_Engine = i_Engine;
-            this.m_License = i_License;
+            this.m_engine = i_Engine;
+            this.m_license = i_License;
         }
 
         public License License
         {
-            get { return this.m_License; }
+            get { return this.m_license; }
         }
 
         public int Engine
         {
-            get { return this.m_Engine; }
+            get { return this.m_engine; }
         }
     }
 
-    enum License
+    public enum License
     {
         A,
         A2,

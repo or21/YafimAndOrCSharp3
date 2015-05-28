@@ -1,16 +1,13 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
     public class Energy
     {
-        private float currentAmount;
         private readonly float r_MaxAmount;
+        private float currentAmount;
 
         public Energy(float i_CurrentAmount, float i_MaxAmount)
         {
