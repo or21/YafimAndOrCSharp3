@@ -4,32 +4,21 @@ namespace Ex03.GarageLogic
 {
     class Motor : Vehicle
     {
-        private License m_License;
-        private int m_Engine;
+        private readonly License m_License;
+        private readonly int m_Engine;
 
-        public Motor(string manufacturer, string id, bool i_IsElectric, License i_License, int i_Engine, float i_CurrentAmount)
+        private static readonly int m_numberOfWheels = 2;
+
+        private static readonly float m_electricMaxAir = 31;
+        private static readonly float m_fuelMaxAir = 34;
+
+        private static readonly float m_energy = (float)1.2;
+        private static readonly float m_fuel = (float)8;
+        private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Octan98;
+
+        public Motor(string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, License i_License, int i_Engine,)
+            : base(i_VehicleManufacturer, i_Id, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
         {
-            this.id = id;
-            this.manufacturer = manufacturer;
-
-            this.powerSource = (i_IsElectric) ? new Energy(i_CurrentAmount, (float)1.2) : new Fuel(i_CurrentAmount, 8, Fuel.eFuelType.Octan98);
-            this.powerSourceLeft = maxPower - i_CurrentAmount;
-
-            this.wheels = new List<Wheel>(2);
-            foreach (Wheel wheel in wheels)
-            {
-                if (i_IsElectric)
-                {
-                    wheel.MaxTirePressure = (float) 31;
-                    wheel.Inflate(wheel.MaxTirePressure);
-                }
-                else
-                {
-                    wheel.MaxTirePressure = (float)34;
-                    wheel.Inflate(wheel.MaxTirePressure);
-                }
-            }
-
             // Set additional unique properties
             this.m_Engine = i_Engine;
             this.m_License = i_License;
