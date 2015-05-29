@@ -2,10 +2,10 @@
 
 namespace Ex03.GarageLogic
 {
-    class Motor : Vehicle
+    public class Motor : Vehicle
     {
-        private readonly License m_License;
-        private readonly int m_Engine;
+        private eLicense m_license;
+        private int m_engine;
 
         private static readonly int m_numberOfWheels = 2;
 
@@ -16,26 +16,26 @@ namespace Ex03.GarageLogic
         private static readonly float m_fuel = (float)8;
         private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Octan98;
 
-        public Motor(string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, License i_License, int i_Engine,)
-            : base(i_VehicleManufacturer, i_Id, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
-        {
+        public Motor(string iVehicleManufacturer, string iId, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, eLicense i_License, int i_Engine)
+            : base(iVehicleManufacturer, iId, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
+                {
             // Set additional unique properties
-            this.m_Engine = i_Engine;
-            this.m_License = i_License;
+            this.m_engine = i_Engine;
+            this.m_license = i_License;
         }
 
-        public License License
+        public eLicense License
         {
-            get { return this.m_License; }
+            get { return this.m_license; }
         }
 
         public int Engine
         {
-            get { return this.m_Engine; }
+            get { return this.m_engine; }
         }
     }
 
-    enum License
+    public enum eLicense
     {
         A,
         A2,
