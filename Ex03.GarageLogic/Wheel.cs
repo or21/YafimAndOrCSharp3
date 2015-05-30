@@ -13,14 +13,14 @@ namespace Ex03.GarageLogic
         public void Inflate(float i_AirToAdd)
         {
             // TODO: Exception...
-            //try
-            //{
+            try
+            {
                 this.m_currentTirePressure = i_AirToAdd;
-           // }
-           // catch (ValueOutOfRangeException vore)
-           // {
-           //     throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
-           // }
+            }
+            catch (ValueOutOfRangeException vore)
+            {
+                throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
+            }
         }
 
         public string Manufacturer
@@ -29,7 +29,7 @@ namespace Ex03.GarageLogic
             set { this.m_manufacturer = value; }
         }
 
-        public float MCurrentTirePressure
+        public float CurrentTirePressure
         {
             get { return this.m_currentTirePressure; }
             set
@@ -39,10 +39,9 @@ namespace Ex03.GarageLogic
                     this.m_currentTirePressure = value;
                 }
                 else
-                {
-                    //throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
-                }
-            }
+        {
+                    throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
+                }}
         }
 
         public float MaxTirePressure

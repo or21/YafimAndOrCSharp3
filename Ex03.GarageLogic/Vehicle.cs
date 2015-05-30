@@ -8,11 +8,13 @@ namespace Ex03.GarageLogic
     {
         protected internal string Manufacturer;
         protected internal string Id;
+
         protected internal float m_powerSourceLeft;
         protected internal List<Wheel> m_wheels;
         protected internal Energy m_powerSource;
         protected internal int m_maxPower;
         protected internal bool m_isElectric;
+        protected internal float[] currentAmountOfAir;
 
         protected Vehicle(string i_Manufacturer,
                           string i_Id,
@@ -47,7 +49,7 @@ namespace Ex03.GarageLogic
                 {
                     Manufacturer = i_Manufacturer,
                     MaxTirePressure = i_MaxTirePressure,
-                    MCurrentTirePressure = i_CurrentAmountOfAir
+                    CurrentTirePressure = i_CurrentAmountOfAir
                 };
                 m_wheels.Add(wheel);
             }
@@ -63,9 +65,9 @@ namespace Ex03.GarageLogic
             string dataToString = null;
             int i = 1;
             foreach (Wheel wheel in m_wheels)
-            {
+        {
                 dataToString += string.Format("Wheel {0}: Current air pressure: {1}, manufacturer: {2}\n", i,
-                    wheel.MCurrentTirePressure,
+                    wheel.CurrentTirePressure,
                     wheel.Manufacturer);
                 i++;
             }
