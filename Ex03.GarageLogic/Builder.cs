@@ -22,8 +22,8 @@ namespace Ex03.GarageLogic
             switch (i_Vehicle)
             {
                 case eVehicle.Car:
-                    eColor color = (eColor)i_UniqueProperties[0];
-                    int numberOfDoors = (int)i_UniqueProperties[1];
+                    eColor color = (eColor) i_UniqueProperties[0];
+                    int numberOfDoors = (int) i_UniqueProperties[1];
                     vehicle = new Car(i_VehicleManufacturer, i_Id, i_IsElectric, i_CurrentAmountOfPowerSource, i_CurrentAmountOfAir, i_WheelManufacturer, color, numberOfDoors);
                     break;
                 case eVehicle.Motor:
@@ -40,14 +40,14 @@ namespace Ex03.GarageLogic
                 // Add more vehicles here...
             }
             return vehicle;
-        }
+    }
 
-        public enum eVehicle
-        {
+    public enum eVehicle
+    {
             Car = 1,
             Motor,
             Truk
-            // add more supported vehicles here
-        }
+        // add more supported vehicles here
     }
+}
 }

@@ -45,9 +45,9 @@ namespace Ex03.GarageLogic
 
             foreach (Wheel wheel in m_wheels)
             {
-                wheel.Manufacturer = i_Manufacturer;
-                wheel.MaxTirePressure = i_MaxTirePressure;
-                wheel.CurrentTirePressure = i_CurrentAmountOfAir[currentTire];
+                wheel.MManufacturer = i_Manufacturer;
+                wheel.MMaxTirePressure = i_MaxTirePressure;
+                wheel.MCurrentTirePressure = i_CurrentAmountOfAir[currentTire];
                 currentTire++;
             }
         }
