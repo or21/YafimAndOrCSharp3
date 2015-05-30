@@ -12,12 +12,15 @@ namespace Ex03.GarageLogic
 
         public void Inflate(float airToAdd)
         {
-            if (airToAdd > this.maxTirePressure)
+            // TODO: Exception...
+            try
             {
-                // TODO: handle error "to much air to add" --> ValueOutOfRangeException
+                this.currentTirePressure = airToAdd;
             }
-
-            this.currentTirePressure = airToAdd;
+            catch (ValueOutOfRangeException vore)
+            {
+                throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.maxTirePressure, 0);
+            }
         }
 
         public string Manufacturer
@@ -29,7 +32,15 @@ namespace Ex03.GarageLogic
         public float CurrentTirePressure
         {
             get { return this.currentTirePressure; }
-            set { CurrentTirePressure = value; }
+            set {
+                if (value > this.maxTirePressure)
+                {
+                    this.currentTirePressure = value;
+                }
+                else
+                {
+                    throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.maxTirePressure, 0);
+                }}
         }
 
         public float MaxTirePressure
