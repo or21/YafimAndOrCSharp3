@@ -193,6 +193,7 @@ The system will change it's state to 'In Process'");
 
         private static void loadPowerSourceForVehicle(eOperation i_Operation)
         {
+            //TODO: add check if the load is for the real power source
             string licenseNumber = getLicenseNumberFromUser();
             Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
             string fuelType = null;
@@ -247,6 +248,8 @@ The system will change it's state to 'In Process'");
             Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
             Garage.BlowAirForVehicel(currentVehicle);
             Console.WriteLine("Air blowed successfuly");
+            Console.WriteLine("Press 'enter' to continue");
+            Console.ReadLine();
         }
 
         private static void changeVehicleState()
@@ -301,9 +304,13 @@ The system will change it's state to 'In Process'");
         {
             string lNumber = getLicenseNumberFromUser();
             Vehicle lookForVehicle = garage.FindVehicleByLicense(lNumber);
+            
             if (lookForVehicle != null)
             {
-                //showData(lookForVehicle);
+                Console.WriteLine(lookForVehicle.VehicleToString());
+                Console.WriteLine();
+                Console.WriteLine("Press 'enter' to continue");
+                Console.ReadLine();
             }
         }
 

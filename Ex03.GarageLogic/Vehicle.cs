@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Ex03.GarageLogic
 {
@@ -9,7 +10,7 @@ namespace Ex03.GarageLogic
         protected internal string Id;
         protected internal float m_powerSourceLeft;
         protected internal List<Wheel> m_wheels;
-        protected internal object m_powerSource;
+        protected internal Energy m_powerSource;
         protected internal int m_maxPower;
         protected internal bool m_isElectric;
 
@@ -17,6 +18,7 @@ namespace Ex03.GarageLogic
                           string i_Id,
                           float i_CurrentAmountOfPowerSource,
                           int i_NumberOfWheels,
+                          float i_CurrentAmountOfAir,
                           bool i_IsElectric,
                           float i_MaxAir,
                           string i_WheelManufacturer,
@@ -30,25 +32,24 @@ namespace Ex03.GarageLogic
             this.m_isElectric = i_IsElectric;
             this.Manufacturer = i_Manufacturer;
             this.Id = i_Id;
-            this.m_powerSourceLeft = m_maxPower - i_CurrentAmountOfPowerSource;
 
-            float[] currentAmountOfAir = new float[i_NumberOfWheels];
-
-            InitWheels(ref currentAmountOfAir, i_MaxAir, i_WheelManufacturer, i_NumberOfWheels);
+            InitWheels(i_CurrentAmountOfAir, i_MaxAir, i_WheelManufacturer, i_NumberOfWheels);
         }
 
-        public void InitWheels(ref float[] i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer,
+        public void InitWheels(float i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer,
             int i_NumberOfWheels)
         {
             this.m_wheels = new List<Wheel>(i_NumberOfWheels);
-            int currentTire = 0;
 
-            foreach (Wheel wheel in m_wheels)
+            for (int i = 0; i < i_NumberOfWheels; i++)
             {
-                wheel.MManufacturer = i_Manufacturer;
-                wheel.MMaxTirePressure = i_MaxTirePressure;
-                wheel.MCurrentTirePressure = i_CurrentAmountOfAir[currentTire];
-                currentTire++;
+                Wheel wheel = new Wheel
+                {
+                    Manufacturer = i_Manufacturer,
+                    MaxTirePressure = i_MaxTirePressure,
+                    MCurrentTirePressure = i_CurrentAmountOfAir
+                };
+                m_wheels.Add(wheel);
             }
         }
 
@@ -57,9 +58,19 @@ namespace Ex03.GarageLogic
             get { return this.m_powerSource; }
         }
 
-        public override string ToString()
+        public virtual string VehicleToString()
         {
-            return base.ToString();
+            string dataToString = null;
+            int i = 1;
+            foreach (Wheel wheel in m_wheels)
+            {
+                dataToString += string.Format("Wheel {0}: Current air pressure: {1}, manufacturer: {2}\n", i,
+                    wheel.MCurrentTirePressure,
+                    wheel.Manufacturer);
+                i++;
+            }
+            dataToString += string.Format("Current amount of power source {0}\n", this.m_powerSource.CurrAmount);
+            return dataToString;
         }
     }
 }

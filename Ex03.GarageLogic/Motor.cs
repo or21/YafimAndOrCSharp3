@@ -17,7 +17,7 @@ namespace Ex03.GarageLogic
         private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Octan98;
 
         public Motor(string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, eLicense i_License, int i_Engine)
-            : base(i_VehicleManufacturer, i_Id, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
+            : base(i_VehicleManufacturer, i_Id, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_CurrentAmountOfAir, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
                 {
             // Set additional unique properties
             this.m_engine = i_Engine;
@@ -32,6 +32,20 @@ namespace Ex03.GarageLogic
         public int Engine
         {
             get { return this.m_engine; }
+        }
+
+        public override string VehicleToString()
+        {
+            string motorData = base.VehicleToString();
+
+            if (!this.m_isElectric)
+            {
+                motorData += string.Format("Fuel type is {0}\n", Fuel.eFuelType.Octan98);
+            }
+            motorData += string.Format("Type of license: {0}\n", this.m_license);
+            motorData += string.Format("Motor engine size: {0}\n", this.m_engine);
+
+            return motorData;
         }
     }
 

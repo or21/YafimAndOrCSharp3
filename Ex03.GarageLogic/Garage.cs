@@ -96,7 +96,7 @@ namespace Ex03.GarageLogic
         {
             foreach (Wheel wheel in i_CurrentVehicle.m_wheels)
             {
-                wheel.Inflate(wheel.MMaxTirePressure - wheel.MCurrentTirePressure);
+                wheel.Inflate(wheel.MaxTirePressure - wheel.MCurrentTirePressure);
             }
         }
 
@@ -142,7 +142,5 @@ namespace Ex03.GarageLogic
 
             return isEnumValue;
         }
-
-
     }
 }
