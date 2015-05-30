@@ -25,19 +25,19 @@
         public int Doors
         {
             get { return this.m_numberOfDoors; }
-            set { m_numberOfDoors = value; }
+            set { this.m_numberOfDoors = value; }
         }
 
         public eColor Color
         {
             get { return this.m_color; }
-            set { m_color = value; }
+            set { this.m_color = value; }
         }
     }
 
     public enum eColor
     {
-        Green,
+        Green = 1,
         Black,
         Red,
         White

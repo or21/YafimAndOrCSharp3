@@ -1,56 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Ex03.GarageLogic
 {
     public class Garage
     {
-        private Dictionary<string, VehicleInGarage> vehiclesInGarage;
+        private Dictionary<string, VehicleInGarage> m_vehiclesInGarage;
+        private Builder builder;
 
         public Garage()
         {
-            vehiclesInGarage = new Dictionary<string, VehicleInGarage>();
+            m_vehiclesInGarage = new Dictionary<string, VehicleInGarage>();
+            builder = new Builder();
         }
 
-        public void AddVehicle(Vehicle i_Vehicle)
+        public void AddVehicle(string i_Vehicle, string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, List<object> i_UniqueProperties)
         {
-            VehicleInGarage newVehicleInGarage = new VehicleInGarage();
-            newVehicleInGarage.m_Vehicle = i_Vehicle;
-            newVehicleInGarage.m_State = eStateInGarage.InProcess;
-        
-            if (!vehiclesInGarage.ContainsKey(i_Vehicle.Id))
+            object vehicle = Enum.Parse(typeof(Builder.eVehicle), i_Vehicle);
+            VehicleInGarage newVehicleInGarage = new VehicleInGarage
             {
-                vehiclesInGarage.Add(i_Vehicle.Id, newVehicleInGarage);
+                m_Vehicle = builder.CreateVehicle((Builder.eVehicle)vehicle, i_VehicleManufacturer, i_Id, i_IsElectric, i_CurrentAmountOfPowerSource, i_CurrentAmountOfAir, i_WheelManufacturer, i_UniqueProperties),
+                m_State = eStateInGarage.InProcess
+            };
+
+            if (!m_vehiclesInGarage.ContainsKey(newVehicleInGarage.m_Vehicle.Id))
+            {
+                m_vehiclesInGarage.Add(newVehicleInGarage.m_Vehicle.Id, newVehicleInGarage);
             }
         }
 
         public Vehicle FindVehicleByLicense(string i_LicenseNumber)
         {
-            VehicleInGarage currVehicle = vehiclesInGarage[i_LicenseNumber];
-            return currVehicle.m_Vehicle;
+            Vehicle currVehicle = null;
+            bool isVehicleInGarage = m_vehiclesInGarage.ContainsKey(i_LicenseNumber);
+            
+            if (isVehicleInGarage)
+            {
+                currVehicle = m_vehiclesInGarage[i_LicenseNumber].m_Vehicle;
+            }
+
+            return currVehicle;
         }
 
         public string FindVehicleStatus(string i_LicenseNumber)
         {
-            VehicleInGarage currVehicle = vehiclesInGarage[i_LicenseNumber];
-            return currVehicle.m_State.ToString();
+            string status = null;
+            bool isVehicleInGarage = m_vehiclesInGarage.ContainsKey(i_LicenseNumber);
+
+            if (isVehicleInGarage)
+            {
+                status = m_vehiclesInGarage[i_LicenseNumber].m_State.ToString();
+            }
+
+            return status;
         }
 
         public Dictionary<string, string> GetAllVehiclesByLicense()
         {
             Dictionary<string, string> resultList = new Dictionary<string, string>();
-            foreach (string licenseNumber in vehiclesInGarage.Keys)
+            foreach (string licenseNumber in m_vehiclesInGarage.Keys)
             {
-                resultList.Add(licenseNumber, vehiclesInGarage[licenseNumber].m_State.ToString());
+                resultList.Add(licenseNumber, m_vehiclesInGarage[licenseNumber].m_State.ToString());
             }
 
             return resultList;
         }
 
+        public void ChangeVehicleStatus(string i_LicenseNumber, string i_NewStatus)
+        {
+            object newState = Enum.Parse(typeof(eStateInGarage), i_NewStatus);
+
+            VehicleInGarage currVehicle = m_vehiclesInGarage[i_LicenseNumber];
+            currVehicle.m_State = (eStateInGarage)newState;
+            m_vehiclesInGarage[i_LicenseNumber] = currVehicle;
+        }
+
         public static bool CheckIfStatusIsExists(string i_Status)
         {
-            object currentState = Enum.Parse(typeof(eStateInGarage), i_Status);
-            bool isEnumValue = currentState is eStateInGarage;
+            object currentState = false;
+            bool isEnumValue = true;
+            try
+            {
+                currentState = Enum.Parse(typeof(eStateInGarage), i_Status);
+            }
+            catch (ArgumentException ae)
+            {
+                isEnumValue = false;
+            }
+
             return isEnumValue;
         }
 
@@ -67,7 +105,7 @@ namespace Ex03.GarageLogic
             bool isFuel = i_CurrentVehicle.PowerSource is Fuel;
             if (isFuel)
             {
-                Fuel.eFuelType fuelType = (Fuel.eFuelType) Enum.Parse(typeof(Fuel.eFuelType), i_FuelType);
+                Fuel.eFuelType fuelType = (Fuel.eFuelType)Enum.Parse(typeof(Fuel.eFuelType), i_FuelType);
                 ((Fuel)i_CurrentVehicle.PowerSource).Load(i_AmountInFloat, fuelType);
             }
             else
@@ -88,5 +126,23 @@ namespace Ex03.GarageLogic
             Fixed,
             Paied
         }
+
+        public static bool CheckVehicleType(string i_TypeOfVehicle)
+        {
+            object currentVehicle = false;
+            bool isEnumValue = true;
+            try
+            {
+                currentVehicle = Enum.Parse(typeof(Builder.eVehicle), i_TypeOfVehicle);
+            }
+            catch (ArgumentException ae)
+            {
+                isEnumValue = false;
+            }
+
+            return isEnumValue;
+        }
+
+
     }
 }

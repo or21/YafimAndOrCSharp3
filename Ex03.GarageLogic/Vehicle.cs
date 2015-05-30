@@ -34,13 +34,13 @@ namespace Ex03.GarageLogic
 
             float[] currentAmountOfAir = new float[i_NumberOfWheels];
 
-            initWheels(ref currentAmountOfAir, i_MaxAir, i_WheelManufacturer, i_NumberOfWheels);
+            InitWheels(ref currentAmountOfAir, i_MaxAir, i_WheelManufacturer, i_NumberOfWheels);
         }
 
-        public void initWheels(ref float[] i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer,
-            int numberOfWheels)
+        public void InitWheels(ref float[] i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer,
+            int i_NumberOfWheels)
         {
-            this.m_wheels = new List<Wheel>(numberOfWheels);
+            this.m_wheels = new List<Wheel>(i_NumberOfWheels);
             int currentTire = 0;
 
             foreach (Wheel wheel in m_wheels)
@@ -50,6 +50,16 @@ namespace Ex03.GarageLogic
                 wheel.CurrentTirePressure = i_CurrentAmountOfAir[currentTire];
                 currentTire++;
             }
+        }
+
+        public object PowerSource
+        {
+            get { return this.m_powerSource; }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }
