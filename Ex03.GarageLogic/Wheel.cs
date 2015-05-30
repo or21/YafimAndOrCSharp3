@@ -20,7 +20,7 @@ namespace Ex03.GarageLogic
             catch (ValueOutOfRangeException vore)
             {
                 throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
-            }
+        }
         }
 
         public string Manufacturer
@@ -38,7 +38,7 @@ namespace Ex03.GarageLogic
                     this._currentTirePressure = value;
                 }
                 else
-                {
+        {
                     throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
                 }}
         }

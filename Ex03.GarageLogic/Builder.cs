@@ -9,6 +9,11 @@ namespace Ex03.GarageLogic
     /// </summary>
     public class Builder
     {
+        // expected input format from user
+   //     private string generalFormat = string.Format("Vehicle type, Vehicle Manufacturer, Id, Is Electric, Current Amount Of PowerSource, Current Amount Of Air, Wheel Manufacturer");
+        private List<object> generalFormat = new List<object>();
+
+
         // General fields for all viehicles
         private List<object> m_uniqueProperties;
         private eVehicle m_vehicle;

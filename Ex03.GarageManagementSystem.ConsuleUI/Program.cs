@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Ex03.GarageLogic;
 
 namespace Ex03.GarageManagementSystem.ConsuleUI
@@ -14,7 +15,6 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             garage = new Garage();
 
             runOperations();
-            Console.ReadLine();
         }
 
         private static void runOperations()
@@ -22,6 +22,7 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             bool isExitCode = false;
             while (!isExitCode)
             {
+                Console.Clear();
                 Console.WriteLine("Welcome to the garage");
                 const string v_WelcomMessage = @"Please choose the desired option (number between 1 to 7):
 1. Insert a vehicle to the garage
@@ -46,28 +47,148 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
         {
             switch (i_InputNumber)
             {
-                case (int)eOperation.Insert:
+                case (int) eOperation.Insert:
                     insertVehicleToGarage();
                     break;
-                case (int)eOperation.ShowByLicence:
+                case (int) eOperation.ShowByLicence:
                     showVehiclesByLicense();
                     break;
-                case (int)eOperation.ChangeState:
+                case (int) eOperation.ChangeState:
                     changeVehicleState();
                     break;
-                case (int)eOperation.BlowUp:
+                case (int) eOperation.BlowUp:
                     blowAirForVehicle();
                     break;
-                case (int)eOperation.LoadFuel:
+                case (int) eOperation.LoadFuel:
                     loadPowerSourceForVehicle(eOperation.LoadFuel);
                     break;
-                case (int)eOperation.LoadEnergy:
+                case (int) eOperation.LoadEnergy:
                     loadPowerSourceForVehicle(eOperation.LoadEnergy);
                     break;
-                case (int)eOperation.ShowData:
+                case (int) eOperation.ShowData:
                     showDataForVehicle();
                     break;
             }
+        }
+
+        private static void insertVehicleToGarage()
+        {
+            string licenseNumber = getLicenseNumberFromUser();
+            Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+            if (currentVehicle != null)
+            {
+                Console.WriteLine(@"This vehicle is already in the garage.
+The system will change it's state to 'In Process'");
+                string status = "InProcess";
+                garage.ChangeVehicleStatus(licenseNumber, status);
+            }
+            else
+            {
+                float currentAmountOfPowerSource, currentAmountOfAir;
+                string wheelManufacturer;
+                string vehicleType = getTypeOfVehicleInformation();
+                string manufacturer = getManufacturerName();
+                bool isElectric = getPowerSourceInformation(out currentAmountOfPowerSource);
+                getWheelsInformation(out currentAmountOfAir, out wheelManufacturer);
+                List<object> uniqueProperties = getOtherProperties(vehicleType);
+                garage.AddVehicle(vehicleType, manufacturer, licenseNumber, isElectric, currentAmountOfPowerSource,
+                    currentAmountOfAir, wheelManufacturer, uniqueProperties);
+            }
+        }
+
+        private static List<object> getOtherProperties(string i_VehicleType)
+        {
+            return new List<object>() { 2 , 4};
+        }
+
+        private static string getManufacturerName()
+        {
+            Console.WriteLine("Please enter the name of the manufacturer of the vehicle: ");
+            string manufacturer = Console.ReadLine();
+
+            return manufacturer;
+        }
+
+        private static void getWheelsInformation(out float i_CurrentAmountOfAir, out string i_WheelManufacturer)
+        {
+            bool isValidNumber = false;
+            i_CurrentAmountOfAir = 0;
+            while (!isValidNumber)
+            {
+                Console.WriteLine("Please enter the current amount of air for your wheels:");
+                string amountToLoad = Console.ReadLine();
+                isValidNumber = float.TryParse(amountToLoad, out i_CurrentAmountOfAir);
+                if (!isValidNumber)
+                {
+                    Console.WriteLine("This is not a number. Let's try again.");
+                }
+            }
+
+            Console.WriteLine("Please enter the manufaturer of your wheels:");
+            i_WheelManufacturer = Console.ReadLine();
+        }
+
+        private static bool getPowerSourceInformation(out float i_CurrentAmountOfPowerSource)
+        {
+            bool isValidInput = false;
+            string chosenLetter = null;
+            while (!isValidInput)
+            {
+                Console.WriteLine(
+                    "Is the car power source is elctricity or fuel? (Choose 'e' for electricity or 'f' for fuel");
+                chosenLetter = Console.ReadLine();
+                isValidInput = chosenLetter != null && (chosenLetter.Equals("e") || chosenLetter.Equals("f"));
+                if (!isValidInput)
+                {
+                    Console.WriteLine("Invalid input. try again.");
+                }
+            }
+            i_CurrentAmountOfPowerSource = getAmountOfCurrentPowerSource();
+
+            return chosenLetter.Equals("e");
+        }
+
+        private static float getAmountOfCurrentPowerSource()
+        {
+            bool isValidNumber = false;
+            float amountInFloat = 0;
+            while (!isValidNumber)
+            {
+                Console.WriteLine("Please enter the current amount of your power source:");
+                string amountToLoad = Console.ReadLine();
+                isValidNumber = float.TryParse(amountToLoad, out amountInFloat);
+                if (!isValidNumber)
+                {
+                    Console.WriteLine("This is not a number. Let's try again.");
+                }
+            }
+
+            return amountInFloat;
+        }
+
+        private static string getTypeOfVehicleInformation()
+        {
+            bool isValidType = false;
+            string typeOfVehicle = null;
+            int numberOfVehicleTypes = sizeof (Builder.eVehicle);
+            while (!isValidType)
+            {
+                Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ",
+                    numberOfVehicleTypes);
+                int i;
+                for (i = 1; i < numberOfVehicleTypes - 1; i++)
+                {
+                    Console.Write("{0}, ", (Builder.eVehicle)i);
+                }
+                Console.WriteLine("{0}", (Builder.eVehicle)i);
+                typeOfVehicle = Console.ReadLine();
+                isValidType = Garage.CheckVehicleType(typeOfVehicle);
+                if (!isValidType)
+                {
+                    Console.WriteLine("Invalid type. Please try again.");
+                }
+            }
+            return typeOfVehicle;
         }
 
         private static void loadPowerSourceForVehicle(eOperation i_Operation)
@@ -86,7 +207,7 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
                     if (!isLegalFuel)
                     {
                         Console.WriteLine("Fuel type does not exists. Please try again.");
-                    } 
+                    }
                 }
             }
 
@@ -130,21 +251,24 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
 
         private static void changeVehicleState()
         {
+            string newStatus = null;
             bool isStatusExists = false;
+            string licenseNumber = getLicenseNumberFromUser();
+            string currentVehicleStatus = garage.FindVehicleStatus(licenseNumber);
+
             while (!isStatusExists)
             {
-                string licenseNumber = getLicenseNumberFromUser();
-                string currentVehicle = garage.FindVehicleStatus(licenseNumber);
-                Console.WriteLine(@"The current status of the vehicle is: {0}", currentVehicle);
+                Console.WriteLine(@"The current status of the vehicle is: {0}", currentVehicleStatus);
                 Console.WriteLine("Please enter the new status that you want for the vehilce:");
-                string status = Console.ReadLine();
-                isStatusExists = Garage.CheckIfStatusIsExists(status);
+                newStatus = Console.ReadLine();
+                isStatusExists = Garage.CheckIfStatusIsExists(newStatus);
                 if (!isStatusExists)
                 {
                     Console.WriteLine("Invalid status. let's try again");
                 }
             }
 
+            garage.ChangeVehicleStatus(licenseNumber, newStatus);
             Console.WriteLine("Status changed successfuly");
         }
 
@@ -155,9 +279,14 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             int i = 1;
             foreach (string licenseNumber in licenseAndState.Keys)
             {
-                Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber, licenseAndState[licenseNumber]);
+                Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber,
+                    licenseAndState[licenseNumber]);
                 i++;
             }
+            // TODO: add filter
+            Console.WriteLine();
+            Console.WriteLine("Press 'enter' to continue");
+            Console.ReadLine();
         }
 
         private static string getLicenseNumberFromUser()
@@ -174,7 +303,7 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             Vehicle lookForVehicle = garage.FindVehicleByLicense(lNumber);
             if (lookForVehicle != null)
             {
-                showData(lookForVehicle);
+                //showData(lookForVehicle);
             }
         }
 
@@ -208,16 +337,16 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
 
             return num;
         }
-    }
 
-    public enum eOperation
-    {
-        Insert = 1,
-        ShowByLicence,
-        ChangeState,
-        BlowUp,
-        LoadFuel,
-        LoadEnergy,
-        ShowData
+        public enum eOperation
+        {
+            Insert = 1,
+            ShowByLicence,
+            ChangeState,
+            BlowUp,
+            LoadFuel,
+            LoadEnergy,
+            ShowData
+        }
     }
 }
