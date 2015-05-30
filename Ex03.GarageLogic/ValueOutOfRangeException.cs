@@ -17,6 +17,9 @@ namespace Ex03.GarageLogic
             this.m_minValue = i_MinValue;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public float MaxValue
         {
             get { return this.m_maxValue; }
