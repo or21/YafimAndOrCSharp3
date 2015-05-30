@@ -7,11 +7,22 @@ namespace Ex03.GarageLogic
     {
         protected internal string Manufacturer;
         protected internal string Id;
+
         protected internal float m_powerSourceLeft;
-        protected internal List<Wheel> m_wheels;
         protected internal object m_powerSource;
         protected internal int m_maxPower;
         protected internal bool m_isElectric;
+
+        /// <summary>
+        /// Wheels
+        /// </summary>
+        protected internal List<Wheel> m_wheels;
+
+        /// <summary>
+        /// Current amount of air
+        /// </summary>
+        protected internal float[] currentAmountOfAir;
+
 
         protected Vehicle(string i_Manufacturer,
                           string i_Id,
@@ -32,7 +43,7 @@ namespace Ex03.GarageLogic
             this.Id = i_Id;
             this.m_powerSourceLeft = m_maxPower - i_CurrentAmountOfPowerSource;
 
-            float[] currentAmountOfAir = new float[i_NumberOfWheels];
+            currentAmountOfAir = new float[i_NumberOfWheels];
 
             initWheels(ref currentAmountOfAir, i_MaxAir, i_WheelManufacturer, i_NumberOfWheels);
         }
@@ -43,11 +54,12 @@ namespace Ex03.GarageLogic
             this.m_wheels = new List<Wheel>(numberOfWheels);
             int currentTire = 0;
 
+            // For each wheel set the relevant properties
             foreach (Wheel wheel in m_wheels)
             {
-                wheel.MManufacturer = i_Manufacturer;
-                wheel.MMaxTirePressure = i_MaxTirePressure;
-                wheel.MCurrentTirePressure = i_CurrentAmountOfAir[currentTire];
+                wheel.Manufacturer = i_Manufacturer;
+                wheel.MaxTirePressure = i_MaxTirePressure;
+                wheel.CurrentTirePressure = i_CurrentAmountOfAir[currentTire];
                 currentTire++;
             }
         }

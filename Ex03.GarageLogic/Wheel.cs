@@ -7,7 +7,7 @@ namespace Ex03.GarageLogic
     public class Wheel
     {
         private string m_manufacturer;
-        private float m_currentTirePressure;
+        private float _currentTirePressure;
         private float m_maxTirePressure;
 
         public void Inflate(float i_AirToAdd)
@@ -15,7 +15,7 @@ namespace Ex03.GarageLogic
             // TODO: Exception...
             try
             {
-                this.m_currentTirePressure = i_AirToAdd;
+                this._currentTirePressure = i_AirToAdd;
             }
             catch (ValueOutOfRangeException vore)
             {
@@ -29,13 +29,13 @@ namespace Ex03.GarageLogic
             set { this.m_manufacturer = value; }
         }
 
-        public float MCurrentTirePressure
+        public float CurrentTirePressure
         {
-            get { return this.m_currentTirePressure; }
+            get { return this._currentTirePressure; }
             set {
                 if (value > this.m_maxTirePressure)
                 {
-                    this.m_currentTirePressure = value;
+                    this._currentTirePressure = value;
                 }
                 else
                 {

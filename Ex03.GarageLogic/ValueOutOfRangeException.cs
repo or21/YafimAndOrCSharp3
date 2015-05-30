@@ -18,7 +18,7 @@ namespace Ex03.GarageLogic
         }
 
         /// <summary>
-        /// 
+        /// j
         /// </summary>
         public float MaxValue
         {
