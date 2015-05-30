@@ -16,17 +16,17 @@ namespace Ex03.GarageLogic
             // Build specific vehecile
             switch (i_Vehicle)
             {
-                case eVehicle.CAR:
+                case eVehicle.Car:
                     eColor color = (eColor) i_UniqueProperties[0];
                     int numberOfDoors = (int) i_UniqueProperties[1];
                     vehicle = new Car(i_VehicleManufacturer, i_Id, i_IsElectric, i_CurrentAmountOfPowerSource, i_CurrentAmountOfAir, i_WheelManufacturer, color, numberOfDoors);
                     break;
-                case eVehicle.MOTOR:
+                case eVehicle.Motor:
                     eLicense license = (eLicense)i_UniqueProperties[0];
                     int egine = (int) i_UniqueProperties[1];
                     vehicle = new Motor(i_VehicleManufacturer, i_Id, i_IsElectric, i_CurrentAmountOfPowerSource, i_CurrentAmountOfAir, i_WheelManufacturer, license, egine);
                     break;
-                case eVehicle.TRUK:
+                case eVehicle.Truk:
                     bool isCarryingDangerous = (bool)i_UniqueProperties[0];
                     int currentCarryWeight = (int) i_UniqueProperties[1];
                     vehicle = new Truk(i_VehicleManufacturer, i_Id, i_IsElectric, i_CurrentAmountOfPowerSource, i_CurrentAmountOfAir, i_WheelManufacturer, isCarryingDangerous, currentCarryWeight);
@@ -40,9 +40,9 @@ namespace Ex03.GarageLogic
 
     public enum eVehicle
     {
-        CAR,
-        MOTOR,
-        TRUK
+        Car,
+        Motor,
+        Truk
         // add more supported vehicles here
     }
 }
