@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Ex03.GarageLogic
 {
@@ -12,21 +11,27 @@ namespace Ex03.GarageLogic
         public Garage()
         {
             m_vehiclesInGarage = new Dictionary<string, VehicleInGarage>();
-            builder = new Builder();
         }
 
-        public void AddVehicle(string i_Vehicle, string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, List<object> i_UniqueProperties)
+        public VehicleInGarage CreateVehicle(string i_Vehicle, string i_Id)
         {
-            object vehicle = Enum.Parse(typeof(Builder.eVehicle), i_Vehicle);
+            Builder.eVehicle vehicle = (Builder.eVehicle) Enum.Parse(typeof(Builder.eVehicle), i_Vehicle);
+            builder = new Builder(vehicle);
             VehicleInGarage newVehicleInGarage = new VehicleInGarage
             {
-                m_Vehicle = builder.CreateVehicle((Builder.eVehicle)vehicle, i_VehicleManufacturer, i_Id, i_IsElectric, i_CurrentAmountOfPowerSource, i_CurrentAmountOfAir, i_WheelManufacturer, i_UniqueProperties),
+                m_Vehicle = builder.Vehicle,
                 m_State = eStateInGarage.InProcess
             };
 
-            if (!m_vehiclesInGarage.ContainsKey(newVehicleInGarage.m_Vehicle.m_id))
+            return newVehicleInGarage;
+        }
+
+        public void AddVehicle(VehicleInGarage i_NewVehicleInGarage)
+        {
+            i_NewVehicleInGarage.m_Vehicle.SetProperties();
+            if (!m_vehiclesInGarage.ContainsKey(i_NewVehicleInGarage.m_Vehicle.m_id))
             {
-                m_vehiclesInGarage.Add(newVehicleInGarage.m_Vehicle.m_id, newVehicleInGarage);
+                m_vehiclesInGarage.Add(i_NewVehicleInGarage.m_Vehicle.m_id, i_NewVehicleInGarage);
             }
         }
 
@@ -34,7 +39,7 @@ namespace Ex03.GarageLogic
         {
             Vehicle currVehicle = null;
             bool isVehicleInGarage = m_vehiclesInGarage.ContainsKey(i_LicenseNumber);
-            
+
             if (isVehicleInGarage)
             {
                 currVehicle = m_vehiclesInGarage[i_LicenseNumber].m_Vehicle;
@@ -102,25 +107,24 @@ namespace Ex03.GarageLogic
 
         public static void LoadPowerSourceForVehicle(Vehicle i_CurrentVehicle, float i_AmountInFloat, string i_FuelType)
         {
-            bool isFuel = i_CurrentVehicle.PowerSource is Fuel;
-            if (isFuel)
+            if (!i_CurrentVehicle.IsElectric)
             {
                 Fuel.eFuelType fuelType = (Fuel.eFuelType)Enum.Parse(typeof(Fuel.eFuelType), i_FuelType);
-                ((Fuel)i_CurrentVehicle.PowerSource).Load(i_AmountInFloat, fuelType);
+                ((Fuel)i_CurrentVehicle.m_powerSource).Load(i_AmountInFloat, fuelType);
             }
             else
             {
-                ((Energy)i_CurrentVehicle.PowerSource).Load(i_AmountInFloat);
+                (i_CurrentVehicle.m_powerSource).Load(i_AmountInFloat);
             }
         }
 
-        internal struct VehicleInGarage
+        public struct VehicleInGarage
         {
-            internal Vehicle m_Vehicle;
-            internal eStateInGarage m_State;
+            public Vehicle m_Vehicle;
+            public eStateInGarage m_State;
         }
 
-        internal enum eStateInGarage
+        public enum eStateInGarage
         {
             InProcess,
             Fixed,

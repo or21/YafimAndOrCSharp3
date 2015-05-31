@@ -50,5 +50,10 @@ namespace Ex03.GarageLogic
         Truk
         // add more supported vehicles here
     }
+
+        public Vehicle Vehicle
+        {
+            get { return this.vehicle; }
+        }
 }
 }

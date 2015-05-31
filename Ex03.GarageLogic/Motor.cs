@@ -22,11 +22,11 @@ namespace Ex03.GarageLogic
             base.m_vehicleDictionary.Add("Engine", new int());
         }
 
-        public override void setProperties()
+        public override void SetProperties()
         {
-            base.setProperties();
+            base.SetProperties();
             License = (eLicense) Enum.Parse(typeof (eLicense), (string) base.VehicleDictionary["License"]);
- //           Engine = (int)int.Parse(typeof (string), (string) base.VehicleDictionary["Engine"]);
+            Engine = int.Parse((string) base.VehicleDictionary["Engine"]);
         }
 
         // Some getter and setters

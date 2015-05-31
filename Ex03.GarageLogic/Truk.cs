@@ -16,20 +16,29 @@ namespace Ex03.GarageLogic
             base.FuelType = Fuel.eFuelType.Solar;
 
             // Set unique properties
-            base.m_vehicleDictionary.Add("Is Carrying Dangerous", new bool());
-            base.m_vehicleDictionary.Add("Current Carry Weight", new float());
+            base.m_vehicleDictionary.Add("Is Carrying Dangerous", false);
+            base.m_vehicleDictionary.Add("Current Carry Weight", -1);
+        }
+
+        public override void SetProperties()
+        {
+            base.SetProperties();
+
+            CurretCarryWeight = int.Parse((string) base.VehicleDictionary["Is Carrying Dangerous"]);
+            IsCarryingDangerous = bool.Parse((string) base.VehicleDictionary["Current Carry Weight"]);
         }
 
         // Some getters and setters
-
         public float CurretCarryWeight
         {
             get { return this.m_currentCarryWeight; }
+            set { this.m_currentCarryWeight = value; }
         }
 
         public bool IsCarryingDangerous
         {
             get { return this.m_isCarryingDangerous; }
+            set { this.m_isCarryingDangerous = value; }
         }
 
         public override string VehicleToString()
