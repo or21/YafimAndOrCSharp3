@@ -4,19 +4,18 @@ namespace Ex03.GarageLogic
 {
     public class Truk : Vehicle
     {
-        private readonly bool m_isCarryingDangerous;
-        private readonly float m_currentCarryWeight;
-
-        private static readonly int m_numberOfWheels = 16;
-        private static readonly float m_electricMaxAir = 0;
-        private static readonly float m_fuelMaxAir = 31;
-
-        private static readonly float m_energy = 0;
-        private static readonly float m_fuel = (float)170;
-        private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Solar;
+        private bool m_isCarryingDangerous;
+        private float m_currentCarryWeight;
 
         public Truk()
         {
+
+            base.NumberOfWheels = 16;
+            base.FuelMaxAir = 31;
+            base.MaxFuel = (float)170;
+            base.FuelType = Fuel.eFuelType.Solar;
+
+            // Set unique properties
             base.m_vehicleDictionary.Add("Is Carrying Dangerous", new bool());
             base.m_vehicleDictionary.Add("Current Carry Weight", new float());
         }

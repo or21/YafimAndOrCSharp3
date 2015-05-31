@@ -40,11 +40,6 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public void createVehicle(eVehicle i_Vehicle, string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, List<object> i_UniqueProperties)
-        {
-            List<object> m_uniqueProperties = new List<object>();
-        }
-
     public enum eVehicle
     {
 

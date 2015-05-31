@@ -145,7 +145,7 @@ namespace Ex03.GarageLogic
         public float ElectricMaxAir
         {
             get { return this.m_electricMaxAir; }
-            set { this.ElectricMaxAir = value; }
+            set { this.m_electricMaxAir = value; }
         }
 
         public float FuelMaxAir
