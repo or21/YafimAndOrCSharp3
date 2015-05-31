@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
@@ -7,21 +8,25 @@ namespace Ex03.GarageLogic
         private eLicense m_license;
         private int m_engine;
 
-        private static readonly int m_numberOfWheels = 2;
-
-        private static readonly float m_electricMaxAir = 31;
-        private static readonly float m_fuelMaxAir = 34;
-
-        private static readonly float m_energy = (float)1.2;
-        private static readonly float m_fuel = (float)8;
-        private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Octan98;
-
         public Motor()
         {
             // TODO: ADD GENERAL PROPERTIES 
+            base.NumberOfWheels = 2;
+            base.ElectricMaxAir = 31;
+            base.FuelMaxAir = 34;
+            base.MaxEnergy = (float)1.2;
+            base.MaxFuel = (float)8;
+            base.FuelType = Fuel.eFuelType.Octan98;
 
             base.m_vehicleDictionary.Add("License", new eLicense());
             base.m_vehicleDictionary.Add("Engine", new int());
+        }
+
+        public override void SetProperties()
+        {
+            base.SetProperties();
+            License = (eLicense) Enum.Parse(typeof (eLicense), (string) base.VehicleDictionary["License"]);
+            Engine = int.Parse((string) base.VehicleDictionary["Engine"]);
         }
 
         // Some getter and setters
@@ -29,11 +34,13 @@ namespace Ex03.GarageLogic
         public eLicense License
         {
             get { return this.m_license; }
+            set { this.m_license = value; }
         }
 
         public int Engine
         {
             get { return this.m_engine; }
+            set { this.m_engine = value; }
         }
 
         public override string VehicleToString()

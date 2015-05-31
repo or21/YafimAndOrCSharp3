@@ -27,8 +27,11 @@ namespace Ex03.GarageLogic
         protected internal List<Wheel> m_wheels;
         protected internal Energy m_powerSource;
         protected internal bool m_isElectric;
+
+        // Some helper variables
         private float m_currentAmountOfAirPressure;
         private float m_maxAir;
+        private bool m_ValidValue;
 
         // TODO: 
 
@@ -125,7 +128,19 @@ namespace Ex03.GarageLogic
         public float ElectricMaxAir
         {
             get { return this.m_electricMaxAir; }
-            set { this.m_electricMaxAir = value; }
+            //set { this.m_electricMaxAir = value; }
+            set
+            {
+                m_ValidValue = value <= this.m_electricMaxAir;
+                if (m_ValidValue)
+                {
+
+                }
+                else
+                {
+                    throw new ValueOutOfRangeException(new Exception(), ElectricMaxAir, 0);
+                }
+            }
         }
 
         public float FuelMaxAir
