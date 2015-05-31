@@ -130,23 +130,6 @@ namespace Ex03.GarageLogic
             set { this.m_fuelMaxAir = value; }
         }
 
-        public float CurrentAmountOfAirPressure
-        {
-            get { return this.m_currentAmountOfAirPressure; }
-            set
-            {
-                bool isValidValue = value <= this.m_maxAir;
-                if (isValidValue)
-                {
-                    this.m_currentAmountOfAirPressure = value;
-                }
-                else
-                {
-                    throw new ValueOutOfRangeException(new Exception(), m_maxAir, 0);
-            }
-        }
-        }
-
         public float MaxEnergy
         {
             get { return this.m_maxEnergy; }

@@ -30,10 +30,9 @@ namespace Ex03.GarageLogic
         public float CurrAmount
         {
             get { return this.currentAmount; }
-            //set { this.currentAmount = value; }
             set
             {
-                bool isValidValue = value <= this.currentAmount;
+                bool isValidValue = value <= this.r_MaxAmount;
                 if (isValidValue)
                 {
                     this.currentAmount = value;
