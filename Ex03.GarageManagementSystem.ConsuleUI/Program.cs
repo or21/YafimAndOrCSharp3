@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using Ex03.GarageLogic;
 
 namespace Ex03.GarageManagementSystem.ConsuleUI
@@ -72,113 +74,42 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
 
         private static void insertVehicleToGarage()
         {
-            string licenseNumber = getLicenseNumberFromUser();
-            Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
-            if (currentVehicle != null)
+            try
             {
-                Console.WriteLine(@"This vehicle is already in the garage.
+                string licenseNumber = getLicenseNumberFromUser();
+                Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+                if (currentVehicle != null)
+                {
+                    Console.WriteLine(@"This vehicle is already in the garage.
 The system will change it's state to 'In Process'");
-                string status = "InProcess";
-                garage.ChangeVehicleStatus(licenseNumber, status);
-            }
-            else
-            {
-                float currentAmountOfPowerSource, currentAmountOfAir;
-                string wheelManufacturer;
-                string vehicleType = getTypeOfVehicleInformation();
-                string manufacturer = getManufacturerName();
-                bool isElectric = getPowerSourceInformation(out currentAmountOfPowerSource);
-                getWheelsInformation(out currentAmountOfAir, out wheelManufacturer);
-                List<object> uniqueProperties = getOtherProperties(vehicleType);
-                garage.AddVehicle(vehicleType, manufacturer, licenseNumber, isElectric, currentAmountOfPowerSource,
-                    currentAmountOfAir, wheelManufacturer, uniqueProperties);
-            }
-        }
-
-        private static List<object> getOtherProperties(string i_VehicleType)
-        {
-            Builder.eVehicle vehicleType = (Builder.eVehicle) Enum.Parse(typeof(Builder.eVehicle), i_VehicleType);
-            List<object> result = new List<object>();
-
-            //switch (vehicleType)
-            //{
-            //    case Builder.eVehicle.Car:
-            //        result = getCarProperties();
-            //        break;
-            //    case Builder.eVehicle.Motor:
-            //        result = getMotorProperties();
-            //        break;
-            //    case Builder.eVehicle.Truk:
-            //        result = getTrukProperties();
-            //        break;
-            //}
-
-            return result;
-        }
-
-        private static string getManufacturerName()
-        {
-            Console.WriteLine("Please enter the name of the manufacturer of the vehicle: ");
-            string manufacturer = Console.ReadLine();
-
-            return manufacturer;
-        }
-
-        private static void getWheelsInformation(out float i_CurrentAmountOfAir, out string i_WheelManufacturer)
-        {
-            bool isValidNumber = false;
-            i_CurrentAmountOfAir = 0;
-            while (!isValidNumber)
-            {
-                Console.WriteLine("Please enter the current amount of air for your wheels:");
-                string amountToLoad = Console.ReadLine();
-                isValidNumber = float.TryParse(amountToLoad, out i_CurrentAmountOfAir);
-                if (!isValidNumber)
+                    string status = "InProcess";
+                    garage.ChangeVehicleStatus(licenseNumber, status);
+                }
+                else
                 {
-                    Console.WriteLine("This is not a number. Let's try again.");
+                    string vehicleType = getTypeOfVehicleInformation();
+                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber);
+                    newVehicleInGarage.m_Vehicle.Id = licenseNumber;
+                    fillParams(newVehicleInGarage);
+                    garage.AddVehicle(newVehicleInGarage);
                 }
             }
-
-            Console.WriteLine("Please enter the manufaturer of your wheels:");
-            i_WheelManufacturer = Console.ReadLine();
-        }
-
-        private static bool getPowerSourceInformation(out float i_CurrentAmountOfPowerSource)
-        {
-            bool isValidInput = false;
-            string chosenLetter = null;
-            while (!isValidInput)
+            catch (ArgumentException ae)
             {
-                Console.WriteLine(
-                    "Is the car power source is elctricity or fuel? (Choose 'e' for electricity or 'f' for fuel");
-                chosenLetter = Console.ReadLine();
-                isValidInput = chosenLetter != null && (chosenLetter.Equals("e") || chosenLetter.Equals("f"));
-                if (!isValidInput)
-                {
-                    Console.WriteLine("Invalid input. try again.");
-                }
-            }
-            i_CurrentAmountOfPowerSource = getAmountOfCurrentPowerSource();
-
-            return chosenLetter.Equals("e");
-        }
-
-        private static float getAmountOfCurrentPowerSource()
-        {
-            bool isValidNumber = false;
-            float amountInFloat = 0;
-            while (!isValidNumber)
-            {
-                Console.WriteLine("Please enter the current amount of your power source:");
-                string amountToLoad = Console.ReadLine();
-                isValidNumber = float.TryParse(amountToLoad, out amountInFloat);
-                if (!isValidNumber)
-                {
-                    Console.WriteLine("This is not a number. Let's try again.");
-                }
+                //TODO: Bla
             }
 
-            return amountInFloat;
+        }
+
+        private static void fillParams(Garage.VehicleInGarage i_NewVehicleInGarage)
+        {
+            for (int i = 0; i < i_NewVehicleInGarage.m_Vehicle.VehicleDictionary.Count; i++)
+            {
+                string sad = i_NewVehicleInGarage.m_Vehicle.VehicleDictionary.ElementAt(i).Key;
+                Console.Write(sad + " : ");
+                string input = Console.ReadLine();
+                i_NewVehicleInGarage.m_Vehicle.VehicleDictionary[sad] = input;
+            }
         }
 
         private static string getTypeOfVehicleInformation()

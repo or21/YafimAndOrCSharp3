@@ -36,24 +36,31 @@ namespace Ex03.GarageLogic
                     this.vehicle = new Truk();
                     break;
 
-                    // add more vehciles here
+                // add more vehciles here
             }
-            }
+        }
 
-        public void createVehicle(eVehicle i_Vehicle, string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, List<object> i_UniqueProperties)
+        public void CreateVehicle(eVehicle i_Vehicle, string i_VehicleManufacturer, string i_Id, bool i_IsElectric,
+            float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer,
+            List<object> i_UniqueProperties)
         {
             List<object> m_uniqueProperties = new List<object>();
-    }
+        }
 
-    public enum eVehicle
-    {
+        public enum eVehicle
+        {
 
             Car = 1,
-        
-        Motor,
-        
-        Truk
-        // add more supported vehicles here
+
+            Motor,
+
+            Truk
+            // add more supported vehicles here
+        }
+
+        public Vehicle Vehicle
+        {
+            get { return this.vehicle; }
+        }
     }
-}
 }

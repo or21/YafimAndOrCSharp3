@@ -15,12 +15,11 @@ namespace Ex03.GarageLogic
             base.ElectricMaxAir = 31;
             base.FuelMaxAir = 31;
             base.MaxEnergy = (float)2.2;
-            base.MaxFuel = (float) 35;
+            base.MaxFuel = (float)35;
             base.FuelType = Fuel.eFuelType.Octan96;
 
             base.m_vehicleDictionary.Add("Color", null);
             base.m_vehicleDictionary.Add("Number Of Doors", null);
-
         }
 
         // Some setters and getters
@@ -37,11 +36,11 @@ namespace Ex03.GarageLogic
             set { this.m_color = value; }
         }
 
-        public override void setProperties()
+        public override void SetProperties()
         {
-            base.setProperties();
-            Color = (eColor) base.VehicleDictionary["Color"];
-            Doors = (eDoors) base.VehicleDictionary["Number Of Doors"];
+            base.SetProperties();
+            Color = (eColor) Enum.Parse(typeof(eColor), (string) base.VehicleDictionary["Color"]);
+            Doors = (eDoors) Enum.Parse(typeof(eDoors), (string) base.VehicleDictionary["Number Of Doors"]);
         }
 
         public override string VehicleToString()
@@ -71,7 +70,7 @@ namespace Ex03.GarageLogic
     public enum eDoors
     {
         Two = 2,
-        
+
         Three,
 
         Four,
