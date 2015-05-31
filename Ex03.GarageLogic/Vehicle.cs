@@ -1,31 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Ex03.GarageLogic
 {
     public abstract class Vehicle
     {
-        protected internal string m_manufacturer;
-        protected internal string m_id;
-
-        protected internal int m_numberOfWheels;
-        protected internal float m_electricMaxAir;
-        protected internal float m_fuelMaxAir;
-
-        protected internal float m_maxEnergy;
-        protected internal float m_maxFuel;
-
-        protected internal Dictionary<string, object> m_vehicleDictionary;
-
-        // TODO: initialze to null...
-        protected internal Fuel.eFuelType m_fuelType;
-
-        protected internal List<Wheel> m_wheels;
-        protected internal Energy m_powerSource;
-        protected internal bool m_isElectric;
-
-        // Some helper variables
+        private const string k_manufacQuestion = "Manufacturer";
+        private const string k_isElecQuestion = "Electric engine? <true/false>";
+        private const string k_amountPSQuestion = "Current Amount Of Power Source";
+        private const string k_wheelManufacQuestion = "Wheel Manufacturer";
+        private const string k_currAmounAirQuestion = "Current Amount Of Air Pressure";
+        protected internal string m_Manufacturer;
+        protected internal string m_Id;
+        protected internal int m_NumberOfWheels;
+        protected internal float m_ElectricMaxAir;
+        protected internal float m_FuelMaxAir;
+        protected internal float m_MaxEnergy;
+        protected internal float m_MaxFuel;
+        protected internal Dictionary<string, object> m_VehicleDictionary;
+        protected internal Fuel.eFuelType m_FuelType;
+        protected internal List<Wheel> m_Wheels;
+        protected internal Energy m_PowerSource;
+        protected internal bool m_IsElectric;
         private float m_maxAir;
 
         protected Vehicle()
@@ -35,38 +31,37 @@ namespace Ex03.GarageLogic
 
         private void createDictionary()
         {
-            this.m_vehicleDictionary = new Dictionary<string, object>();
+            this.m_VehicleDictionary = new Dictionary<string, object>();
 
             // Add general properties
-            this.m_vehicleDictionary.Add("Manufacturer", null);
-            this.m_vehicleDictionary.Add("Electric engine? <true/false>", false);
-            this.m_vehicleDictionary.Add("Current Amount Of Power Source", 0);
-            this.m_vehicleDictionary.Add("Wheel Manufacturer", null);
-            this.m_vehicleDictionary.Add("Current Amount Of Air Pressure", 0);
+            this.m_VehicleDictionary.Add(k_manufacQuestion, null);
+            this.m_VehicleDictionary.Add(k_isElecQuestion, false);
+            this.m_VehicleDictionary.Add(k_amountPSQuestion, 0);
+            this.m_VehicleDictionary.Add(k_wheelManufacQuestion, null);
+            this.m_VehicleDictionary.Add(k_currAmounAirQuestion, 0);
         }
 
         public Dictionary<string, object> VehicleDictionary
         {
-            get { return this.m_vehicleDictionary; }
+            get { return this.m_VehicleDictionary; }
             // TODO: Validate input here...
         }
 
         public void setEngine(float i_MaxAmount, Fuel.eFuelType i_FuelType)
         {
-            if (m_isElectric)
+            if (m_IsElectric)
             {
-                this.m_powerSource = new Energy(0, i_MaxAmount);
+                this.m_PowerSource = new Energy(0, i_MaxAmount);
             }
             else
             {
-                this.m_powerSource = new Fuel(0, i_MaxAmount, i_FuelType);
+                this.m_PowerSource = new Fuel(0, i_MaxAmount, i_FuelType);
             }
         }
 
-        public void InitWheels(float i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer,
-            int i_NumberOfWheels)
+        public void InitWheels(float i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer, int i_NumberOfWheels)
         {
-            this.m_wheels = new List<Wheel>(i_NumberOfWheels);
+            this.m_Wheels = new List<Wheel>(i_NumberOfWheels);
 
             for (int i = 0; i < i_NumberOfWheels; i++)
             {
@@ -76,99 +71,101 @@ namespace Ex03.GarageLogic
                     MaxTirePressure = i_MaxTirePressure,
                     CurrentTirePressure = i_CurrentAmountOfAir
                 };
-                m_wheels.Add(wheel);
+                m_Wheels.Add(wheel);
             }
         }
 
         public virtual void SetProperties()
         {
             // Initialize Manufacturer and id
-            Manufacturer = (string)VehicleDictionary["Manufacturer"];
+            Manufacturer = (string)VehicleDictionary[k_manufacQuestion];
 
             // Set the power source
-            IsElectric = bool.Parse((string)VehicleDictionary["Electric engine? <true/false>"]);
+            IsElectric = bool.Parse((string)VehicleDictionary[k_isElecQuestion]);
 
             setEngine(MaxFuel, FuelType);
-            this.m_powerSource.CurrAmount = float.Parse((string)VehicleDictionary["Current Amount Of Power Source"]);
+            this.m_PowerSource.CurrAmount = float.Parse((string)VehicleDictionary[k_amountPSQuestion]);
 
-            float currentAmountOfAirPressure = float.Parse((string)VehicleDictionary["Current Amount Of Air Pressure"]);
-            m_maxAir = (IsElectric) ? ElectricMaxAir : FuelMaxAir;
+            float currentAmountOfAirPressure = float.Parse((string)VehicleDictionary[k_currAmounAirQuestion]);
+            m_maxAir = IsElectric ? ElectricMaxAir : FuelMaxAir;
 
             // Set the wheels
-            InitWheels(currentAmountOfAirPressure, m_maxAir, (string)VehicleDictionary["Wheel Manufacturer"], NumberOfWheels);
+            InitWheels(currentAmountOfAirPressure, m_maxAir, (string)VehicleDictionary[k_wheelManufacQuestion], NumberOfWheels);
         }
 
         // SOME GETTERS AND SETTERS
-
         public string Manufacturer
         {
-            get { return this.m_manufacturer; }
-            set { this.m_manufacturer = value; }
+            get { return this.m_Manufacturer; }
+            set { this.m_Manufacturer = value; }
         }
 
         public string Id
         {
-            get { return this.m_id; }
-            set { this.m_id = value; }
+            get { return this.m_Id; }
+            set { this.m_Id = value; }
         }
 
         public int NumberOfWheels
         {
-            get { return this.m_numberOfWheels; }
-            set { this.m_numberOfWheels = value; }
+            get { return this.m_NumberOfWheels; }
+            set { this.m_NumberOfWheels = value; }
         }
 
         public float ElectricMaxAir
         {
-            get { return this.m_electricMaxAir; }
-            set { this.m_electricMaxAir = value; }
+            get { return this.m_ElectricMaxAir; }
+            set { this.m_ElectricMaxAir = value; }
         }
 
         public float FuelMaxAir
         {
-            get { return this.m_fuelMaxAir; }
-            set { this.m_fuelMaxAir = value; }
+            get { return this.m_FuelMaxAir; }
+            set { this.m_FuelMaxAir = value; }
         }
 
         public float MaxEnergy
         {
-            get { return this.m_maxEnergy; }
-            set { this.m_maxEnergy = value; }
+            get { return this.m_MaxEnergy; }
+            set { this.m_MaxEnergy = value; }
         }
 
         public float MaxFuel
         {
-            get { return this.m_maxFuel; }
-            set { this.m_maxFuel = value; }
+            get { return this.m_MaxFuel; }
+            set { this.m_MaxFuel = value; }
         }
 
         public Fuel.eFuelType FuelType
         {
-            get { return this.m_fuelType; }
-            set { this.m_fuelType = value; }
+            get { return this.m_FuelType; }
+            set { this.m_FuelType = value; }
         }
 
         public bool IsElectric
         {
-            get { return this.m_isElectric; }
-            set { this.m_isElectric = value; }
+            get { return this.m_IsElectric; }
+            set { this.m_IsElectric = value; }
         }
 
         // To string method
         public virtual string VehicleToString()
         {
-            string dataToString = String.Format("License number: {0}\n", m_id);
+            string dataToString = string.Format("License number: {0}\n", m_Id);
             int i = 1;
-            foreach (Wheel wheel in m_wheels)
+            foreach (Wheel wheel in m_Wheels)
             {
-                dataToString += string.Format("Wheel {0}: Current air pressure: {1}, manufacturer: {2}\n", i,
+                dataToString += string.Format(
+"Wheel {0}: Current air pressure: {1}, manufacturer: {2}\n", 
+                    i,
                     wheel.CurrentTirePressure,
                     wheel.Manufacturer);
                 i++;
             }
-            dataToString += string.Format("Current amount of power source {0}\n", this.m_powerSource.CurrAmount);
+
+            dataToString += string.Format("Current amount of power source {0}\n", this.m_PowerSource.CurrAmount);
+
             return dataToString;
         }
     }
 }
-    

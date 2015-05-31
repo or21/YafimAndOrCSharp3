@@ -13,9 +13,62 @@ namespace Ex03.GarageLogic
             m_vehiclesInGarage = new Dictionary<string, VehicleInGarage>();
         }
 
+        public static bool CheckIfStatusIsExists(string i_Status)
+        {
+            object currentState = false;
+            bool isEnumValue = true;
+            try
+            {
+                currentState = Enum.Parse(typeof(eStateInGarage), i_Status);
+            }
+            catch (ArgumentException ae)
+            {
+                isEnumValue = false;
+            }
+
+            return isEnumValue;
+        }
+
+        public static void BlowAirForVehicel(Vehicle i_CurrentVehicle)
+        {
+            foreach (Wheel wheel in i_CurrentVehicle.m_Wheels)
+            {
+                wheel.Inflate(wheel.MaxTirePressure - wheel.CurrentTirePressure);
+            }
+        }
+
+        public static void LoadPowerSourceForVehicle(Vehicle i_CurrentVehicle, float i_AmountInFloat, string i_FuelType)
+        {
+            if (!i_CurrentVehicle.IsElectric)
+            {
+                Fuel.eFuelType fuelType = (Fuel.eFuelType)Enum.Parse(typeof(Fuel.eFuelType), i_FuelType);
+                ((Fuel)i_CurrentVehicle.m_PowerSource).Load(i_AmountInFloat, fuelType);
+            }
+            else
+            {
+                i_CurrentVehicle.m_PowerSource.Load(i_AmountInFloat);
+            }
+        }
+
+        public static bool CheckVehicleType(string i_TypeOfVehicle)
+        {
+            object currentVehicle = false;
+            bool isEnumValue = true;
+            try
+            {
+                currentVehicle = Enum.Parse(typeof(Builder.eVehicle), i_TypeOfVehicle);
+            }
+            catch (ArgumentException ae)
+            {
+                isEnumValue = false;
+            }
+
+            return isEnumValue;
+        }
+
         public VehicleInGarage CreateVehicle(string i_Vehicle, string i_Id, string i_OwnerName, string i_PhoneNumber)
         {
-            Builder.eVehicle vehicle = (Builder.eVehicle) Enum.Parse(typeof(Builder.eVehicle), i_Vehicle);
+            Builder.eVehicle vehicle = (Builder.eVehicle)Enum.Parse(typeof(Builder.eVehicle), i_Vehicle);
             builder = new Builder(vehicle);
             VehicleInGarage newVehicleInGarage = new VehicleInGarage
             {
@@ -31,9 +84,9 @@ namespace Ex03.GarageLogic
         public void AddVehicle(VehicleInGarage i_NewVehicleInGarage)
         {
             i_NewVehicleInGarage.m_Vehicle.SetProperties();
-            if (!m_vehiclesInGarage.ContainsKey(i_NewVehicleInGarage.m_Vehicle.m_id))
+            if (!m_vehiclesInGarage.ContainsKey(i_NewVehicleInGarage.m_Vehicle.m_Id))
             {
-                m_vehiclesInGarage.Add(i_NewVehicleInGarage.m_Vehicle.m_id, i_NewVehicleInGarage);
+                m_vehiclesInGarage.Add(i_NewVehicleInGarage.m_Vehicle.m_Id, i_NewVehicleInGarage);
             }
         }
 
@@ -63,12 +116,22 @@ namespace Ex03.GarageLogic
             return status;
         }
 
-        public Dictionary<string, string> GetAllVehiclesByLicense()
+        public Dictionary<string, string> GetAllVehiclesByLicense(string i_FilterBy)
         {
+            eStateInGarage desiredState = eStateInGarage.InProcess;
+            if (i_FilterBy != null)
+            {
+                desiredState = (eStateInGarage)Enum.Parse(typeof(eStateInGarage), i_FilterBy);
+            }
+
             Dictionary<string, string> resultList = new Dictionary<string, string>();
             foreach (string licenseNumber in m_vehiclesInGarage.Keys)
             {
-                resultList.Add(licenseNumber, m_vehiclesInGarage[licenseNumber].m_State.ToString());
+                bool isDesiredStatus = i_FilterBy == null || m_vehiclesInGarage[licenseNumber].m_State == desiredState;
+                if (isDesiredStatus)
+                {
+                    resultList.Add(licenseNumber, m_vehiclesInGarage[licenseNumber].m_State.ToString());
+                }
             }
 
             return resultList;
@@ -83,43 +146,6 @@ namespace Ex03.GarageLogic
             m_vehiclesInGarage[i_LicenseNumber] = currVehicle;
         }
 
-        public static bool CheckIfStatusIsExists(string i_Status)
-        {
-            object currentState = false;
-            bool isEnumValue = true;
-            try
-            {
-                currentState = Enum.Parse(typeof(eStateInGarage), i_Status);
-            }
-            catch (ArgumentException ae)
-            {
-                isEnumValue = false;
-            }
-
-            return isEnumValue;
-        }
-
-        public static void BlowAirForVehicel(Vehicle i_CurrentVehicle)
-        {
-            foreach (Wheel wheel in i_CurrentVehicle.m_wheels)
-            {
-                wheel.Inflate(wheel.MaxTirePressure - wheel.CurrentTirePressure);
-            }
-        }
-
-        public static void LoadPowerSourceForVehicle(Vehicle i_CurrentVehicle, float i_AmountInFloat, string i_FuelType)
-        {
-            if (!i_CurrentVehicle.IsElectric)
-            {
-                Fuel.eFuelType fuelType = (Fuel.eFuelType)Enum.Parse(typeof(Fuel.eFuelType), i_FuelType);
-                ((Fuel)i_CurrentVehicle.m_powerSource).Load(i_AmountInFloat, fuelType);
-            }
-            else
-            {
-                (i_CurrentVehicle.m_powerSource).Load(i_AmountInFloat);
-            }
-        }
-
         public struct VehicleInGarage
         {
             public Vehicle m_Vehicle;
@@ -129,34 +155,23 @@ namespace Ex03.GarageLogic
 
             public override string ToString()
             {
-                string vehicleData = string.Format(@"Owner name: {0}
+                string vehicleData = string.Format(
+@"Owner name: {0}
 Phone number: {1}
-Current state in the Garage: {2}", m_OwnerName, m_PhoneNumber, m_State);
+Current state in the Garage: {2}", 
+                                 m_OwnerName, 
+                                 m_PhoneNumber, 
+                                 m_State);
+
                 return vehicleData;
             }
         }
 
         public enum eStateInGarage
         {
-            InProcess,
+            InProcess = 1,
             Fixed,
             Paied
-        }
-
-        public static bool CheckVehicleType(string i_TypeOfVehicle)
-        {
-            object currentVehicle = false;
-            bool isEnumValue = true;
-            try
-            {
-                currentVehicle = Enum.Parse(typeof(Builder.eVehicle), i_TypeOfVehicle);
-            }
-            catch (ArgumentException ae)
-            {
-                isEnumValue = false;
-            }
-
-            return isEnumValue;
         }
     }
 }

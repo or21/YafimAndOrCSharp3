@@ -17,7 +17,7 @@ namespace Ex03.GarageLogic
             bool isEnumValue = true;
             try
             {
-                currentFuel = Enum.Parse(typeof (eFuelType), i_FuelType);
+                currentFuel = Enum.Parse(typeof(eFuelType), i_FuelType);
             }
             catch (ArgumentException ae)
             {

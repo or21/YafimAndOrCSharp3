@@ -15,32 +15,6 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             garage = new Garage();
         }
 
-        public void RunOperations()
-        {
-            bool isExitCode = false;
-            while (!isExitCode)
-            {
-                Console.Clear();
-                Console.WriteLine("Welcome to the garage");
-                const string v_WelcomMessage = @"Please choose the desired option (number between 1 to 7):
-1. Insert a vehicle to the garage
-2. Show all the vehicles that now in the garage
-3. Change vehicle state
-4. Blow up tires
-5. Load a vehicle in fuel(To Max)
-6. Load a vehicle with energy
-7. Show data on specific vehicle";
-                Console.WriteLine(v_WelcomMessage);
-                string chosenOption = Console.ReadLine();
-                isExitCode = chosenOption == v_ExitCode;
-                if (!isExitCode)
-                {
-                    int inputNumber = checkValidInput(chosenOption);
-                    makeOperation(inputNumber);
-                }
-            }
-        }
-
         private static void makeOperation(int i_InputNumber)
         {
             switch (i_InputNumber)
@@ -77,7 +51,8 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
                 Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
                 if (currentVehicle.m_Vehicle != null)
                 {
-                    Console.WriteLine(@"This vehicle is already in the garage.
+                    Console.WriteLine(
+@"This vehicle is already in the garage.
 The system will change it's state to 'In Process'");
                     string status = "InProcess";
                     garage.ChangeVehicleStatus(licenseNumber, status);
@@ -95,7 +70,10 @@ The system will change it's state to 'In Process'");
             }
             catch (ArgumentException ae)
             {
-                //TODO: Bla
+                Console.WriteLine(
+@"There was an error in your input.
+Try again to insert a vehicle");
+                Console.ReadLine();
             }
         }
 
@@ -133,13 +111,13 @@ The system will change it's state to 'In Process'");
             int numberOfVehicleTypes = sizeof(Builder.eVehicle);
             while (!isValidType)
             {
-                Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ",
-                    numberOfVehicleTypes);
+                Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ", numberOfVehicleTypes);
                 int i;
                 for (i = 1; i < numberOfVehicleTypes - 1; i++)
                 {
                     Console.Write("{0}, ", (Builder.eVehicle)i);
                 }
+
                 Console.WriteLine("{0}", (Builder.eVehicle)i);
                 typeOfVehicle = Console.ReadLine();
                 isValidType = Garage.CheckVehicleType(typeOfVehicle);
@@ -148,6 +126,7 @@ The system will change it's state to 'In Process'");
                     Console.WriteLine("Invalid type. Please try again.");
                 }
             }
+
             return typeOfVehicle;
         }
 
@@ -237,19 +216,56 @@ The system will change it's state to 'In Process'");
 
         private static void showVehiclesByLicense()
         {
-            Console.WriteLine("The current vehicles in the garage are:");
-            Dictionary<string, string> licenseAndState = garage.GetAllVehiclesByLicense();
-            int i = 1;
-            foreach (string licenseNumber in licenseAndState.Keys)
+            try
             {
-                Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber,
-                    licenseAndState[licenseNumber]);
-                i++;
+                Console.WriteLine("Do you want to filter by Status in garage? <yes/no>");
+                string answer = Console.ReadLine();
+                string status = null;
+                if (answer == "yes")
+                {
+                    status = getStatusFromUser();
+                    Console.WriteLine("The current vehicles in the garage (filtered by {0}) are:", status);
+                }
+                else
+                {
+                    Console.WriteLine("The current vehicles in the garage are:");
+                    Console.WriteLine();
+                }
+
+                Dictionary<string, string> licenseAndState = garage.GetAllVehiclesByLicense(status);
+                int i = 1;
+                foreach (string licenseNumber in licenseAndState.Keys)
+                {
+                    Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber, licenseAndState[licenseNumber]);
+                    i++;
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("Press 'enter' to continue");
+                Console.ReadLine();
             }
-            // TODO: add filter
-            Console.WriteLine();
-            Console.WriteLine("Press 'enter' to continue");
-            Console.ReadLine();
+            catch (ArgumentException ae)
+            {
+                Console.WriteLine(ae.Message);
+                Console.WriteLine("Press any key to try again");
+                Console.ReadLine();
+                showVehiclesByLicense();
+            }
+        }
+
+        private static string getStatusFromUser()
+        {
+            Console.WriteLine("Please enter status to filter by: ");
+            Console.Write("The options are: ");
+            int j;
+            for (j = 1; j < sizeof(Garage.eStateInGarage) - 1; j++)
+            {
+                Console.Write("{0}, ", (Garage.eStateInGarage) j);
+            }
+
+            Console.WriteLine("{0}", (Garage.eStateInGarage) j);
+            string status = Console.ReadLine();
+            return status;
         }
 
         private static string getLicenseNumberFromUser()
@@ -304,6 +320,32 @@ The system will change it's state to 'In Process'");
             }
 
             return num;
+        }
+
+        public void RunOperations()
+        {
+            bool isExitCode = false;
+            while (!isExitCode)
+            {
+                Console.Clear();
+                Console.WriteLine("Welcome to the garage");
+                const string v_WelcomMessage = @"Please choose the desired option (number between 1 to 7):
+1. Insert a vehicle to the garage
+2. Show all the vehicles that now in the garage
+3. Change vehicle state
+4. Blow up tires (To Max)
+5. Load a vehicle in fuel
+6. Load a vehicle with energy
+7. Show data on specific vehicle";
+                Console.WriteLine(v_WelcomMessage);
+                string chosenOption = Console.ReadLine();
+                isExitCode = chosenOption == v_ExitCode;
+                if (!isExitCode)
+                {
+                    int inputNumber = checkValidInput(chosenOption);
+                    makeOperation(inputNumber);
+                }
+            }
         }
 
         public enum eOperation

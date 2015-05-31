@@ -5,32 +5,41 @@ namespace Ex03.GarageLogic
 {
     public class Motor : Vehicle
     {
+        private const string k_engineSizeQuestion = "Engine size";
+        private readonly string r_licnseQuestion = "License type";
         private eLicense m_license;
         private int m_engine;
-
+        
         public Motor()
         {
-            // TODO: ADD GENERAL PROPERTIES 
-            base.NumberOfWheels = 2;
-            base.ElectricMaxAir = 31;
-            base.FuelMaxAir = 34;
-            base.MaxEnergy = (float)1.2;
-            base.MaxFuel = (float)8;
-            base.FuelType = Fuel.eFuelType.Octan98;
+            NumberOfWheels = 2;
+            ElectricMaxAir = 31;
+            FuelMaxAir = 34;
+            MaxEnergy = (float)1.2;
+            MaxFuel = (float)8;
+            FuelType = Fuel.eFuelType.Octan98;
 
-            base.m_vehicleDictionary.Add("License", new eLicense());
-            base.m_vehicleDictionary.Add("Engine", new int());
+            r_licnseQuestion += " <";
+            int i;
+            for (i = 0; i < Enum.GetNames(typeof(eLicense)).Length - 1; i++)
+            {
+                r_licnseQuestion += (eLicense) i + ", ";
+            }
+
+            r_licnseQuestion += (eLicense) i + ">";
+
+            m_VehicleDictionary.Add(r_licnseQuestion, new eLicense());
+            m_VehicleDictionary.Add(k_engineSizeQuestion, new int());
         }
 
         public override void SetProperties()
         {
             base.SetProperties();
-            License = (eLicense) Enum.Parse(typeof (eLicense), (string) base.VehicleDictionary["License"]);
-            Engine = int.Parse((string) base.VehicleDictionary["Engine"]);
+            License = (eLicense) Enum.Parse(typeof(eLicense), (string) VehicleDictionary[r_licnseQuestion]);
+            Engine = int.Parse((string)VehicleDictionary[k_engineSizeQuestion]);
         }
 
         // Some getter and setters
-
         public eLicense License
         {
             get { return this.m_license; }
@@ -47,10 +56,11 @@ namespace Ex03.GarageLogic
         {
             string motorData = base.VehicleToString();
 
-            if (!this.m_isElectric)
+            if (!this.m_IsElectric)
             {
                 motorData += string.Format("Fuel type is {0}\n", Fuel.eFuelType.Octan98);
             }
+
             motorData += string.Format("Type of license: {0}\n", this.m_license);
             motorData += string.Format("Motor engine size: {0}\n", this.m_engine);
 
@@ -60,7 +70,7 @@ namespace Ex03.GarageLogic
 
     public enum eLicense
     {
-        A,
+        A = 0,
         A2,
         AB,
         B1

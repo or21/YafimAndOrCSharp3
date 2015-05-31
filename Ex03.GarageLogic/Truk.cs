@@ -4,28 +4,29 @@ namespace Ex03.GarageLogic
 {
     public class Truk : Vehicle
     {
+        private const string k_dangerousQuestion = "Is Carrying Dangerous <true/false>";
+        private const string k_weightQuestion = "Current Carry Weight";
         private bool m_isCarryingDangerous;
         private float m_currentCarryWeight;
 
         public Truk()
         {
-
-            base.NumberOfWheels = 16;
-            base.FuelMaxAir = 31;
-            base.MaxFuel = (float)170;
-            base.FuelType = Fuel.eFuelType.Solar;
+            NumberOfWheels = 16;
+            FuelMaxAir = 31;
+            MaxFuel = (float)170;
+            FuelType = Fuel.eFuelType.Solar;
 
             // Set unique properties
-            base.m_vehicleDictionary.Add("Is Carrying Dangerous", false);
-            base.m_vehicleDictionary.Add("Current Carry Weight", -1);
+            m_VehicleDictionary.Add(k_dangerousQuestion, false);
+            m_VehicleDictionary.Add(k_weightQuestion, -1);
         }
 
         public override void SetProperties()
         {
             base.SetProperties();
 
-            CurretCarryWeight = int.Parse((string)base.VehicleDictionary["Current Carry Weight"]);
-            IsCarryingDangerous = bool.Parse((string) base.VehicleDictionary["Is Carrying Dangerous"]);
+            IsCarryingDangerous = bool.Parse((string)VehicleDictionary[k_dangerousQuestion]);
+            CurretCarryWeight = int.Parse((string)VehicleDictionary[k_weightQuestion]);
         }
 
         // Some getters and setters
@@ -45,9 +46,13 @@ namespace Ex03.GarageLogic
         {
             string trukData = base.VehicleToString();
 
-            trukData += string.Format("Fuel type is {0}\n", Fuel.eFuelType.Solar);
-            trukData += string.Format("Is carring dangerous materials: {0}\n", this.m_isCarryingDangerous);
-            trukData += string.Format("Truk current cargo weight: {0}\n", this.m_currentCarryWeight);
+            trukData += string.Format(
+@"Fuel type is {0}
+Is carring dangerous materials: {1}
+Truk current cargo weight: {2}", 
+                               Fuel.eFuelType.Solar, 
+                               this.m_isCarryingDangerous, 
+                               this.m_currentCarryWeight);
 
             return trukData;
         }

@@ -17,7 +17,6 @@ namespace Ex03.GarageLogic
             }
             catch (ValueOutOfRangeException vore)
             {
-                
             }
         }
 
@@ -40,7 +39,6 @@ namespace Ex03.GarageLogic
                 {
                     new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
                 }
-                    
             }
         }
 
