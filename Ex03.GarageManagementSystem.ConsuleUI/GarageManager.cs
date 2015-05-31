@@ -236,7 +236,16 @@ Try again to insert a vehicle");
             while (!isStatusExists)
             {
                 Console.WriteLine(@"The current status of the vehicle is: {0}", currentVehicleStatus);
-                Console.Write("Please enter the new status that you want for the vehilce: ");
+                Console.WriteLine("Please enter the new status that you want for the vehilce: ");
+                Console.Write("The options are: ");
+                int j;
+                for (j = 1; j < sizeof(Garage.eStateInGarage) - 1; j++)
+                {
+                    Console.Write("{0}, ", (Garage.eStateInGarage)j);
+                }
+
+                Console.WriteLine("{0}", (Garage.eStateInGarage)j);
+
                 newStatus = Console.ReadLine();
                 isStatusExists = Garage.CheckIfStatusIsExists(newStatus);
                 if (!isStatusExists)
