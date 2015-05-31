@@ -32,7 +32,19 @@ namespace Ex03.GarageLogic
         public float CurrAmount
         {
             get { return this.currentAmount; }
-            set { this.currentAmount = value; }
+            //set { this.currentAmount = value; }
+            set
+            {
+                bool isValidValue = value <= this.currentAmount;
+                if (isValidValue)
+                {
+                    this.currentAmount = value;
+                }
+                else
+                {
+                    throw new ValueOutOfRangeException(new Exception(), r_MaxAmount, 0);
+                }
+            }
         }
     }
 }

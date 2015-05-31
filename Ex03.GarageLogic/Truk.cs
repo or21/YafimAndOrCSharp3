@@ -24,8 +24,8 @@ namespace Ex03.GarageLogic
         {
             base.SetProperties();
 
-            CurretCarryWeight = int.Parse((string) base.VehicleDictionary["Is Carrying Dangerous"]);
-            IsCarryingDangerous = bool.Parse((string) base.VehicleDictionary["Current Carry Weight"]);
+            CurretCarryWeight = int.Parse((string)base.VehicleDictionary["Current Carry Weight"]);
+            IsCarryingDangerous = bool.Parse((string) base.VehicleDictionary["Is Carrying Dangerous"]);
         }
 
         // Some getters and setters
