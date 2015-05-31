@@ -13,13 +13,10 @@ namespace Ex03.GarageLogic
         protected internal float m_electricMaxAir;
         protected internal float m_fuelMaxAir;
 
-        protected internal float m_curerntAmountOfPowerSource = -1;
-
         protected internal float m_maxEnergy;
         protected internal float m_maxFuel;
 
         protected internal Dictionary<string, object> m_vehicleDictionary;
-
 
         // TODO: initialze to null...
         protected internal Fuel.eFuelType m_fuelType;
@@ -29,11 +26,8 @@ namespace Ex03.GarageLogic
         protected internal bool m_isElectric;
 
         // Some helper variables
-        private float m_currentAmountOfAirPressure;
         private float m_maxAir;
         private bool m_ValidValue;
-
-        // TODO: 
 
         protected Vehicle()
         {
@@ -46,7 +40,7 @@ namespace Ex03.GarageLogic
 
             // Add general properties
             this.m_vehicleDictionary.Add("Manufacturer", null);
-            this.m_vehicleDictionary.Add("Electric engine?", false);
+            this.m_vehicleDictionary.Add("Electric engine? <true/false>", false);
             this.m_vehicleDictionary.Add("Current Amount Of Power Source", 0);
             this.m_vehicleDictionary.Add("Wheel Manufacturer", null);
             this.m_vehicleDictionary.Add("Current Amount Of Air Pressure", 0);
@@ -62,11 +56,11 @@ namespace Ex03.GarageLogic
         {
             if (m_isElectric)
             {
-                this.m_powerSource = new Energy(this.m_curerntAmountOfPowerSource, i_MaxAmount);
+                this.m_powerSource = new Energy(0, i_MaxAmount);
             }
             else
             {
-                this.m_powerSource = new Fuel(this.m_curerntAmountOfPowerSource, i_MaxAmount, i_FuelType);
+                this.m_powerSource = new Fuel(0, i_MaxAmount, i_FuelType);
             }
         }
 
@@ -93,16 +87,16 @@ namespace Ex03.GarageLogic
             Manufacturer = (string)VehicleDictionary["Manufacturer"];
 
             // Set the power source
-            IsElectric = bool.Parse((string)VehicleDictionary["Electric engine?"]);
+            IsElectric = bool.Parse((string)VehicleDictionary["Electric engine? <true/false>"]);
 
-            this.m_curerntAmountOfPowerSource = float.Parse((string) VehicleDictionary["Current Amount Of Power Source"]);
             setEngine(MaxFuel, FuelType);
+            this.m_powerSource.CurrAmount = float.Parse((string)VehicleDictionary["Current Amount Of Power Source"]);
 
-            m_currentAmountOfAirPressure = float.Parse((string)VehicleDictionary["Current Amount Of Air Pressure"]);
+            float currentAmountOfAirPressure = float.Parse((string)VehicleDictionary["Current Amount Of Air Pressure"]);
             m_maxAir = (IsElectric) ? ElectricMaxAir : FuelMaxAir;
 
             // Set the wheels
-            InitWheels(m_currentAmountOfAirPressure, m_maxAir, (string)VehicleDictionary["Wheel Manufacturer"], NumberOfWheels);
+            InitWheels(currentAmountOfAirPressure, m_maxAir, (string)VehicleDictionary["Wheel Manufacturer"], NumberOfWheels);
         }
 
         // SOME GETTERS AND SETTERS
@@ -128,13 +122,12 @@ namespace Ex03.GarageLogic
         public float ElectricMaxAir
         {
             get { return this.m_electricMaxAir; }
-            //set { this.m_electricMaxAir = value; }
             set
             {
                 m_ValidValue = value <= this.m_electricMaxAir;
                 if (m_ValidValue)
                 {
-
+                    this.m_electricMaxAir = value;
                 }
                 else
                 {
@@ -159,12 +152,6 @@ namespace Ex03.GarageLogic
         {
             get { return this.m_maxFuel; }
             set { this.m_maxFuel = value; }
-        }
-
-        public float CurerntAmountOfPowerSource
-        {
-            get { return this.m_curerntAmountOfPowerSource; }
-            set { this.m_curerntAmountOfPowerSource = value; }
         }
 
         public Fuel.eFuelType FuelType

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
@@ -21,7 +19,7 @@ namespace Ex03.GarageLogic
             bool isOverMax = sumOfAmounts > r_MaxAmount;
             if (isOverMax)
             {
-                // TODO: Throw exception ;
+                throw new ArgumentException();
             }
             else
             {

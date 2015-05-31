@@ -129,8 +129,9 @@ namespace Ex03.GarageLogic
 
             public override string ToString()
             {
-                string vehicleData = string.Format("Owner name: {0}\n", m_OwnerName);
-                vehicleData += string.Format("Phone number: {0}", m_PhoneNumber);
+                string vehicleData = string.Format(@"Owner name: {0}
+Phone number: {1}
+Current state in the Garage: {2}", m_OwnerName, m_PhoneNumber, m_State);
                 return vehicleData;
             }
         }
