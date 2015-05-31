@@ -27,7 +27,6 @@ namespace Ex03.GarageLogic
 
         // Some helper variables
         private float m_maxAir;
-        private bool m_ValidValue;
 
         protected Vehicle()
         {
@@ -122,24 +121,30 @@ namespace Ex03.GarageLogic
         public float ElectricMaxAir
         {
             get { return this.m_electricMaxAir; }
-            set
-            {
-                m_ValidValue = value <= this.m_electricMaxAir;
-                if (m_ValidValue)
-                {
-                    this.m_electricMaxAir = value;
-                }
-                else
-                {
-                    throw new ValueOutOfRangeException(new Exception(), ElectricMaxAir, 0);
-                }
-            }
+            set { this.m_electricMaxAir = value; }
         }
 
         public float FuelMaxAir
         {
             get { return this.m_fuelMaxAir; }
             set { this.m_fuelMaxAir = value; }
+        }
+
+        public float CurrentAmountOfAirPressure
+        {
+            get { return this.m_currentAmountOfAirPressure; }
+            set
+            {
+                bool isValidValue = value <= this.m_maxAir;
+                if (isValidValue)
+                {
+                    this.m_currentAmountOfAirPressure = value;
+                }
+                else
+                {
+                    throw new ValueOutOfRangeException(new Exception(), m_maxAir, 0);
+            }
+        }
         }
 
         public float MaxEnergy
