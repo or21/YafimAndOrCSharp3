@@ -32,7 +32,7 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
 7. Show data on specific vehicle";
                 Console.WriteLine(v_WelcomMessage);
                 string chosenOption = Console.ReadLine();
-                isExitCode = chosenOption == v_ExitCode;
+                isExitCode = (chosenOption.ToLower()) == v_ExitCode;
                 if (!isExitCode)
                 {
                     int inputNumber = checkValidInput(chosenOption);
@@ -87,7 +87,8 @@ The system will change it's state to 'In Process'");
                     string vehicleType = getTypeOfVehicleInformation();
                     string ownerName = getOwnerNameInformation();
                     string phoneNumber = getPhoneNumberInformation();
-                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber, ownerName, phoneNumber);
+                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber,
+                        ownerName, phoneNumber);
                     newVehicleInGarage.m_Vehicle.Id = licenseNumber;
                     fillParams(newVehicleInGarage);
                     garage.AddVehicle(newVehicleInGarage);
@@ -95,15 +96,45 @@ The system will change it's state to 'In Process'");
             }
             catch (ArgumentException ae)
             {
-                //TODO: Bla
+                Console.WriteLine(ae.Message);
+                Console.ReadLine();
             }
+            catch (FormatException fe)
+            {
+                Console.WriteLine(fe.Message);
+                Console.ReadLine();
+            }
+            catch (ValueOutOfRangeException vore)
+            {
+                Console.WriteLine(vore.Message);
+                Console.ReadLine();
+            }
+            catch (NullReferenceException nre)
+            {
+                Console.WriteLine("Nothing was typed");
+                Console.ReadLine();
+            }
+
         }
 
         private static string getOwnerNameInformation()
         {
+            bool waitingForInput = true;
             Console.Write("Please enter your name: ");
-            string lNumber = Console.ReadLine();
-            // TODO: some logic of name validity
+            string lNumber = "";
+
+            while (waitingForInput)
+            {
+                lNumber = Console.ReadLine();
+                if (containsOnlyChars(lNumber))
+                {
+                    waitingForInput = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input");
+                }
+            }
             return lNumber;
         }
 
@@ -133,8 +164,10 @@ The system will change it's state to 'In Process'");
             int numberOfVehicleTypes = sizeof(Builder.eVehicle);
             while (!isValidType)
             {
+                int numberOfSupportedVechicle = Enum.GetNames(typeof (Builder.eVehicle)).Length;
+
                 Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ",
-                    numberOfVehicleTypes);
+                    numberOfSupportedVechicle);
                 int i;
                 for (i = 1; i < numberOfVehicleTypes - 1; i++)
                 {
@@ -142,6 +175,8 @@ The system will change it's state to 'In Process'");
                 }
                 Console.WriteLine("{0}", (Builder.eVehicle)i);
                 typeOfVehicle = Console.ReadLine();
+                typeOfVehicle = parseString(typeOfVehicle);
+
                 isValidType = Garage.CheckVehicleType(typeOfVehicle);
                 if (!isValidType)
                 {
@@ -304,6 +339,32 @@ The system will change it's state to 'In Process'");
             }
 
             return num;
+        }
+
+        /// <summary>
+        /// Checks if string contains only chars.
+        /// </summary>
+        /// <param name="i_StringToCheck">String to check</param>
+        /// <returns>If valid or not</returns>
+        private static bool containsOnlyChars(string i_StringToCheck)
+        {
+            bool isChar = false;
+
+            for (int i = 0; i < i_StringToCheck.Length; i++)
+            {
+                isChar = char.IsLetter(i_StringToCheck[i]);
+                if (!isChar)
+                {
+                    break;
+                }
+            }
+
+            return isChar;
+        }
+
+        private static string parseString(string i_StringToParse)
+        {
+            return string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
         }
 
         public enum eOperation
