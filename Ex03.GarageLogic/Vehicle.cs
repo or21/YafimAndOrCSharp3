@@ -127,26 +127,29 @@ namespace Ex03.GarageLogic
 
         public float ElectricMaxAir
         {
-            get { return this.m_electricMaxAir; }
-            //set { this.m_electricMaxAir = value; }
+            get { return this.m_maxEnergy; }
+        }
+
+        public float FuelMaxAir
+        {
+            get { return this.m_maxFuel; }
+        }
+
+        public float CurrentAmountOfAirPressure
+        {
+            get { return this.m_currentAmountOfAirPressure; }
             set
             {
                 m_ValidValue = value <= this.m_electricMaxAir;
                 if (m_ValidValue)
                 {
-
+                    this.m_currentAmountOfAirPressure = value;
                 }
                 else
                 {
-                    throw new ValueOutOfRangeException(new Exception(), ElectricMaxAir, 0);
+                    throw new ValueOutOfRangeException(new Exception(), m_maxAir, 0);
                 }
             }
-        }
-
-        public float FuelMaxAir
-        {
-            get { return this.m_fuelMaxAir; }
-            set { this.m_fuelMaxAir = value; }
         }
 
         public float MaxEnergy
