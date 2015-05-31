@@ -62,7 +62,8 @@ The system will change it's state to 'In Process'");
                     string vehicleType = getTypeOfVehicleInformation();
                     string ownerName = getOwnerNameInformation();
                     string phoneNumber = getPhoneNumberInformation();
-                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber, ownerName, phoneNumber);
+                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber,
+                        ownerName, phoneNumber);
                     newVehicleInGarage.m_Vehicle.Id = licenseNumber;
                     fillParams(newVehicleInGarage);
                     garage.AddVehicle(newVehicleInGarage);
@@ -75,13 +76,42 @@ The system will change it's state to 'In Process'");
 Try again to insert a vehicle");
                 Console.ReadLine();
             }
+            catch (FormatException fe)
+            {
+                Console.WriteLine(fe.Message);
+                Console.ReadLine();
+        }
+            catch (ValueOutOfRangeException vore)
+            {
+                Console.WriteLine(vore.Message);
+                Console.ReadLine();
+            }
+            catch (NullReferenceException nre)
+            {
+                Console.WriteLine("Nothing was typed");
+                Console.ReadLine();
+            }
+
         }
 
         private static string getOwnerNameInformation()
         {
+            bool waitingForInput = true;
             Console.Write("Please enter your name: ");
-            string lNumber = Console.ReadLine();
-            // TODO: some logic of name validity
+            string lNumber = "";
+
+            while (waitingForInput)
+            {
+                lNumber = Console.ReadLine();
+                if (containsOnlyChars(lNumber))
+                {
+                    waitingForInput = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input");
+                }
+            }
             return lNumber;
         }
 
@@ -111,7 +141,10 @@ Try again to insert a vehicle");
             int numberOfVehicleTypes = sizeof(Builder.eVehicle);
             while (!isValidType)
             {
-                Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ", numberOfVehicleTypes);
+                int numberOfSupportedVechicle = Enum.GetNames(typeof (Builder.eVehicle)).Length;
+
+                Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ",
+                    numberOfSupportedVechicle);
                 int i;
                 for (i = 1; i < numberOfVehicleTypes - 1; i++)
                 {
@@ -120,6 +153,8 @@ Try again to insert a vehicle");
 
                 Console.WriteLine("{0}", (Builder.eVehicle)i);
                 typeOfVehicle = Console.ReadLine();
+                typeOfVehicle = parseString(typeOfVehicle);
+
                 isValidType = Garage.CheckVehicleType(typeOfVehicle);
                 if (!isValidType)
                 {
@@ -228,21 +263,21 @@ Try again to insert a vehicle");
                 }
                 else
                 {
-                    Console.WriteLine("The current vehicles in the garage are:");
+            Console.WriteLine("The current vehicles in the garage are:");
                     Console.WriteLine();
                 }
 
                 Dictionary<string, string> licenseAndState = garage.GetAllVehiclesByLicense(status);
-                int i = 1;
-                foreach (string licenseNumber in licenseAndState.Keys)
-                {
+            int i = 1;
+            foreach (string licenseNumber in licenseAndState.Keys)
+            {
                     Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber, licenseAndState[licenseNumber]);
-                    i++;
-                }
+                i++;
+            }
 
-                Console.WriteLine();
-                Console.WriteLine("Press 'enter' to continue");
-                Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Press 'enter' to continue");
+            Console.ReadLine();
             }
             catch (ArgumentException ae)
             {
@@ -346,6 +381,32 @@ Try again to insert a vehicle");
                     makeOperation(inputNumber);
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if string contains only chars.
+        /// </summary>
+        /// <param name="i_StringToCheck">String to check</param>
+        /// <returns>If valid or not</returns>
+        private static bool containsOnlyChars(string i_StringToCheck)
+        {
+            bool isChar = false;
+
+            for (int i = 0; i < i_StringToCheck.Length; i++)
+            {
+                isChar = char.IsLetter(i_StringToCheck[i]);
+                if (!isChar)
+                {
+                    break;
+                }
+            }
+
+            return isChar;
+        }
+
+        private static string parseString(string i_StringToParse)
+        {
+            return string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
         }
 
         public enum eOperation
