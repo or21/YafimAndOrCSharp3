@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Ex03.GarageLogic;
 
 namespace Ex03.GarageManagementSystem.ConsuleUI
@@ -98,7 +97,23 @@ The system will change it's state to 'In Process'");
 
         private static List<object> getOtherProperties(string i_VehicleType)
         {
-            return new List<object>() { 2 , 4};
+            Builder.eVehicle vehicleType = (Builder.eVehicle) Enum.Parse(typeof(Builder.eVehicle), i_VehicleType);
+            List<object> result = new List<object>();
+
+            //switch (vehicleType)
+            //{
+            //    case Builder.eVehicle.Car:
+            //        result = getCarProperties();
+            //        break;
+            //    case Builder.eVehicle.Motor:
+            //        result = getMotorProperties();
+            //        break;
+            //    case Builder.eVehicle.Truk:
+            //        result = getTrukProperties();
+            //        break;
+            //}
+
+            return result;
         }
 
         private static string getManufacturerName()
