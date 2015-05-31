@@ -15,13 +15,13 @@ namespace Ex03.GarageLogic
         private static readonly float m_fuel = (float)170;
         private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Solar;
 
-        public Truk(string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, bool i_IsCarryingDanerous, float i_CurrentCarryWeight)
-            : base(i_VehicleManufacturer, i_Id, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_CurrentAmountOfAir, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
+        public Truk()
         {
-            // Set additional unique properties
-            m_isCarryingDangerous = i_IsCarryingDanerous;
-            m_currentCarryWeight = i_CurrentCarryWeight;
+            base.m_vehicleDictionary.Add("Is Carrying Dangerous", new bool());
+            base.m_vehicleDictionary.Add("Current Carry Weight", new float());
         }
+
+        // Some getters and setters
 
         public float CurretCarryWeight
         {
