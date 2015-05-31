@@ -128,11 +128,13 @@ namespace Ex03.GarageLogic
         public float ElectricMaxAir
         {
             get { return this.m_maxEnergy; }
+            set { this.m_maxEnergy = value; }
         }
 
         public float FuelMaxAir
         {
             get { return this.m_maxFuel; }
+            set { this.m_maxFuel = value; }
         }
 
         public float CurrentAmountOfAirPressure
