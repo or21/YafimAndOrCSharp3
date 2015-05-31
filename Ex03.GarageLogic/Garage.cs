@@ -24,9 +24,9 @@ namespace Ex03.GarageLogic
                 m_State = eStateInGarage.InProcess
             };
 
-            if (!m_vehiclesInGarage.ContainsKey(newVehicleInGarage.m_Vehicle.Id))
+            if (!m_vehiclesInGarage.ContainsKey(newVehicleInGarage.m_Vehicle.m_id))
             {
-                m_vehiclesInGarage.Add(newVehicleInGarage.m_Vehicle.Id, newVehicleInGarage);
+                m_vehiclesInGarage.Add(newVehicleInGarage.m_Vehicle.m_id, newVehicleInGarage);
             }
         }
 

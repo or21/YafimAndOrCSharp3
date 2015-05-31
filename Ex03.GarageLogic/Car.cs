@@ -1,31 +1,31 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
     public class Car : Vehicle
     {
         private eColor m_color;
-        private int m_numberOfDoors;
+        private eDoors m_numberOfDoors;
 
-        private static readonly int m_numberOfWheels = 4;
-        private static readonly float m_electricMaxAir = 31;
-        private static readonly float m_fuelMaxAir = 31;
-
-        private static readonly float m_energy = (float)2.2;
-        private static readonly float m_fuel = (float)35;
-        private static readonly Fuel.eFuelType m_fuelType = Fuel.eFuelType.Octan96;
-
-        public Car(string i_VehicleManufacturer, string i_Id, bool i_IsElectric, float i_CurrentAmountOfPowerSource, float i_CurrentAmountOfAir, string i_WheelManufacturer, eColor i_Color, int i_NumberOfDoors)
-         : base(i_VehicleManufacturer, i_Id, i_CurrentAmountOfPowerSource, m_numberOfWheels, i_CurrentAmountOfAir, i_IsElectric, (i_IsElectric) ? m_electricMaxAir : m_fuelMaxAir, i_WheelManufacturer, (i_IsElectric) ? m_energy : m_fuel, m_fuelType)
+        public Car()
         {
-            // Set additional unique properties
-            this.m_color = i_Color;
-            this.m_numberOfDoors = i_NumberOfDoors;
+            base.NumberOfWheels = 4;
+            base.ElectricMaxAir = 31;
+            base.FuelMaxAir = 31;
+            base.MaxEnergy = (float)2.2;
+            base.MaxFuel = (float) 35;
+            base.FuelType = Fuel.eFuelType.Octan96;
+
+            base.m_vehicleDictionary.Add("Color", null);
+            base.m_vehicleDictionary.Add("Number Of Doors", null);
+
         }
 
+        // Some setters and getters
 
-        public int Doors
+        public eDoors Doors
         {
             get { return this.m_numberOfDoors; }
             set { this.m_numberOfDoors = value; }
@@ -35,6 +35,13 @@ namespace Ex03.GarageLogic
         {
             get { return this.m_color; }
             set { this.m_color = value; }
+        }
+
+        public override void setProperties()
+        {
+            base.setProperties();
+            Color = (eColor) base.VehicleDictionary["Color"];
+            Doors = (eDoors) base.VehicleDictionary["Number Of Doors"];
         }
 
         public override string VehicleToString()
@@ -58,5 +65,17 @@ namespace Ex03.GarageLogic
         Black,
         Red,
         White
+    }
+
+
+    public enum eDoors
+    {
+        Two = 2,
+        
+        Three,
+
+        Four,
+
+        Five
     }
 }
