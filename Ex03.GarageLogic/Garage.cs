@@ -13,14 +13,16 @@ namespace Ex03.GarageLogic
             m_vehiclesInGarage = new Dictionary<string, VehicleInGarage>();
         }
 
-        public VehicleInGarage CreateVehicle(string i_Vehicle, string i_Id)
+        public VehicleInGarage CreateVehicle(string i_Vehicle, string i_Id, string i_OwnerName, string i_PhoneNumber)
         {
             Builder.eVehicle vehicle = (Builder.eVehicle) Enum.Parse(typeof(Builder.eVehicle), i_Vehicle);
             builder = new Builder(vehicle);
             VehicleInGarage newVehicleInGarage = new VehicleInGarage
             {
                 m_Vehicle = builder.Vehicle,
-                m_State = eStateInGarage.InProcess
+                m_State = eStateInGarage.InProcess,
+                m_OwnerName = i_OwnerName,
+                m_PhoneNumber = i_PhoneNumber
             };
 
             return newVehicleInGarage;
@@ -35,14 +37,14 @@ namespace Ex03.GarageLogic
             }
         }
 
-        public Vehicle FindVehicleByLicense(string i_LicenseNumber)
+        public VehicleInGarage FindVehicleByLicense(string i_LicenseNumber)
         {
-            Vehicle currVehicle = null;
+            VehicleInGarage currVehicle = new VehicleInGarage();
             bool isVehicleInGarage = m_vehiclesInGarage.ContainsKey(i_LicenseNumber);
 
             if (isVehicleInGarage)
             {
-                currVehicle = m_vehiclesInGarage[i_LicenseNumber].m_Vehicle;
+                currVehicle = m_vehiclesInGarage[i_LicenseNumber];
             }
 
             return currVehicle;
@@ -122,6 +124,15 @@ namespace Ex03.GarageLogic
         {
             public Vehicle m_Vehicle;
             public eStateInGarage m_State;
+            public string m_OwnerName;
+            public string m_PhoneNumber;
+
+            public override string ToString()
+            {
+                string vehicleData = string.Format("Owner name: {0}\n", m_OwnerName);
+                vehicleData += string.Format("Phone number: {0}", m_PhoneNumber);
+                return vehicleData;
+            }
         }
 
         public enum eStateInGarage

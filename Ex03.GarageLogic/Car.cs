@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {
@@ -65,7 +63,6 @@ namespace Ex03.GarageLogic
         Red,
         White
     }
-
 
     public enum eDoors
     {

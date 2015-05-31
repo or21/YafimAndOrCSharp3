@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Ex03.GarageLogic;
 
 namespace Ex03.GarageManagementSystem.ConsuleUI
@@ -77,8 +76,8 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             try
             {
                 string licenseNumber = getLicenseNumberFromUser();
-                Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
-                if (currentVehicle != null)
+                Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+                if (currentVehicle.m_Vehicle != null)
                 {
                     Console.WriteLine(@"This vehicle is already in the garage.
 The system will change it's state to 'In Process'");
@@ -88,7 +87,9 @@ The system will change it's state to 'In Process'");
                 else
                 {
                     string vehicleType = getTypeOfVehicleInformation();
-                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber);
+                    string ownerName = getOwnerNameInformation();
+                    string phoneNumber = getPhoneNumberInformation();
+                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber, ownerName, phoneNumber);
                     newVehicleInGarage.m_Vehicle.Id = licenseNumber;
                     fillParams(newVehicleInGarage);
                     garage.AddVehicle(newVehicleInGarage);
@@ -98,7 +99,22 @@ The system will change it's state to 'In Process'");
             {
                 //TODO: Bla
             }
+        }
 
+        private static string getOwnerNameInformation()
+        {
+            Console.WriteLine("Please enter your name:");
+            string lNumber = Console.ReadLine();
+            // TODO: some logic of name validity
+            return lNumber;
+        }
+
+        private static string getPhoneNumberInformation()
+        {
+            Console.WriteLine("Please enter your phone number:");
+            string lNumber = Console.ReadLine();
+            // TODO: some logic of phone number validity
+            return lNumber;
         }
 
         private static void fillParams(Garage.VehicleInGarage i_NewVehicleInGarage)
@@ -141,7 +157,7 @@ The system will change it's state to 'In Process'");
         {
             //TODO: add check if the load is for the real power source
             string licenseNumber = getLicenseNumberFromUser();
-            Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+            Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
             string fuelType = null;
             bool isFuel = i_Operation == eOperation.LoadFuel;
             if (isFuel)
@@ -159,7 +175,7 @@ The system will change it's state to 'In Process'");
             }
 
             float amountInFloat = getAmountToLoad();
-            Garage.LoadPowerSourceForVehicle(currentVehicle, amountInFloat, fuelType);
+            Garage.LoadPowerSourceForVehicle(currentVehicle.m_Vehicle, amountInFloat, fuelType);
         }
 
         public static string GetFuelFromUser()
@@ -191,8 +207,8 @@ The system will change it's state to 'In Process'");
         private static void blowAirForVehicle()
         {
             string licenseNumber = getLicenseNumberFromUser();
-            Vehicle currentVehicle = garage.FindVehicleByLicense(licenseNumber);
-            Garage.BlowAirForVehicel(currentVehicle);
+            Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+            Garage.BlowAirForVehicel(currentVehicle.m_Vehicle);
             Console.WriteLine("Air blowed successfuly");
             Console.WriteLine("Press 'enter' to continue");
             Console.ReadLine();
@@ -249,11 +265,12 @@ The system will change it's state to 'In Process'");
         private static void showDataForVehicle()
         {
             string lNumber = getLicenseNumberFromUser();
-            Vehicle lookForVehicle = garage.FindVehicleByLicense(lNumber);
+            Garage.VehicleInGarage lookForVehicle = garage.FindVehicleByLicense(lNumber);
             
-            if (lookForVehicle != null)
+            if (lookForVehicle.m_Vehicle != null)
             {
-                Console.WriteLine(lookForVehicle.VehicleToString());
+                Console.WriteLine(lookForVehicle.ToString());
+                Console.WriteLine(lookForVehicle.m_Vehicle.VehicleToString());
                 Console.WriteLine();
                 Console.WriteLine("Press 'enter' to continue");
                 Console.ReadLine();

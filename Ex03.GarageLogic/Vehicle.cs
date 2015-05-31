@@ -13,13 +13,12 @@ namespace Ex03.GarageLogic
         protected internal float m_electricMaxAir;
         protected internal float m_fuelMaxAir;
 
-        protected internal float m_curerntAmountOfEnergy = -1;
-        protected internal float m_curerntAmountOfFuel = -1;
+        protected internal float m_curerntAmountOfPowerSource = -1;
 
         protected internal float m_maxEnergy;
         protected internal float m_maxFuel;
 
-        protected internal Dictionary<string, object> m_vehicleDictionary; 
+        protected internal Dictionary<string, object> m_vehicleDictionary;
 
 
         // TODO: initialze to null...
@@ -47,26 +46,25 @@ namespace Ex03.GarageLogic
             this.m_vehicleDictionary.Add("Electric engine?", false);
             this.m_vehicleDictionary.Add("Current Amount Of Power Source", 0);
             this.m_vehicleDictionary.Add("Wheel Manufacturer", null);
-            this.m_vehicleDictionary.Add("Current Amount Of Air Pressure", 0);   
+            this.m_vehicleDictionary.Add("Current Amount Of Air Pressure", 0);
         }
 
         public Dictionary<string, object> VehicleDictionary
         {
             get { return this.m_vehicleDictionary; }
             // TODO: Validate input here...
-        } 
-
-        // TODO: DUPLICATED CODE...
-        public void setEngine(float i_CurerntAmountOfEnergy, float i_MaxAmount)
-        {
-            this.m_curerntAmountOfEnergy = i_CurerntAmountOfEnergy;
-            this.m_powerSource = new Energy(this.m_curerntAmountOfEnergy, i_MaxAmount);
         }
 
-        public void setEngine(float i_CurerntAmountOfFuel, float i_MaxAmount, Fuel.eFuelType i_FuelType)
+        public void setEngine(float i_MaxAmount, Fuel.eFuelType i_FuelType)
         {
-            this.m_curerntAmountOfFuel = i_CurerntAmountOfFuel;
-            this.m_powerSource = new Fuel(i_CurerntAmountOfFuel, i_MaxAmount, i_FuelType);
+            if (m_isElectric)
+            {
+                this.m_powerSource = new Energy(this.m_curerntAmountOfPowerSource, i_MaxAmount);
+            }
+            else
+            {
+                this.m_powerSource = new Fuel(this.m_curerntAmountOfPowerSource, i_MaxAmount, i_FuelType);
+            }
         }
 
         public void InitWheels(float i_CurrentAmountOfAir, float i_MaxTirePressure, string i_Manufacturer,
@@ -86,30 +84,18 @@ namespace Ex03.GarageLogic
             }
         }
 
-
         public virtual void SetProperties()
         {
             // Initialize Manufacturer and id
             Manufacturer = (string)VehicleDictionary["Manufacturer"];
 
             // Set the power source
-            IsElectric = bool.Parse((string) VehicleDictionary["Electric engine?"]);
+            IsElectric = bool.Parse((string)VehicleDictionary["Electric engine?"]);
 
-            if (IsElectric)
-            {
-                // Set power source
-                m_curerntAmountOfEnergy = float.Parse((string)VehicleDictionary["Current Amount Of Power Source"]);
-                setEngine(m_curerntAmountOfEnergy, MaxEnergy);
-            }
-            else
-            {
-                // Set power source
-                m_curerntAmountOfFuel = float.Parse((string)VehicleDictionary["Current Amount Of Power Source"]);
-                setEngine(m_curerntAmountOfFuel, MaxFuel, FuelType);
+            this.m_curerntAmountOfPowerSource = float.Parse((string) VehicleDictionary["Current Amount Of Power Source"]);
+            setEngine(MaxFuel, FuelType);
 
-            }
-
-            m_currentAmountOfAirPressure = float.Parse((string) VehicleDictionary["Current Amount Of Air Pressure"]);
+            m_currentAmountOfAirPressure = float.Parse((string)VehicleDictionary["Current Amount Of Air Pressure"]);
             m_maxAir = (IsElectric) ? ElectricMaxAir : FuelMaxAir;
 
             // Set the wheels
@@ -160,16 +146,10 @@ namespace Ex03.GarageLogic
             set { this.m_maxFuel = value; }
         }
 
-        public float CurerntAmountOfEnergy
+        public float CurerntAmountOfPowerSource
         {
-            get { return this.m_curerntAmountOfEnergy; }
-            set { this.m_curerntAmountOfEnergy = value; }
-        }
-
-        public float CurerntAmountOfFuel
-        {
-            get { return this.m_curerntAmountOfFuel; }
-            set { this.m_curerntAmountOfFuel = value; }
+            get { return this.m_curerntAmountOfPowerSource; }
+            set { this.m_curerntAmountOfPowerSource = value; }
         }
 
         public Fuel.eFuelType FuelType
@@ -187,10 +167,10 @@ namespace Ex03.GarageLogic
         // To string method
         public virtual string VehicleToString()
         {
-            string dataToString = null;
+            string dataToString = String.Format("License number: {0}\n", m_id);
             int i = 1;
             foreach (Wheel wheel in m_wheels)
-        {
+            {
                 dataToString += string.Format("Wheel {0}: Current air pressure: {1}, manufacturer: {2}\n", i,
                     wheel.CurrentTirePressure,
                     wheel.Manufacturer);

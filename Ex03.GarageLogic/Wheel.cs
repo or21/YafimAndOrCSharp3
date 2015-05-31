@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Ex03.GarageLogic
 {
@@ -15,7 +13,7 @@ namespace Ex03.GarageLogic
             // TODO: Exception...
             try
             {
-                this.m_currentTirePressure = i_AirToAdd;
+                this.m_currentTirePressure += i_AirToAdd;
             }
             catch (ValueOutOfRangeException vore)
             {
@@ -45,7 +43,6 @@ namespace Ex03.GarageLogic
                     
             }
         }
-        
 
         public float MaxTirePressure
         {
