@@ -36,6 +36,13 @@ namespace Ex03.GarageLogic
                     break;
 
                 // add more vehciles here
+                    //TODO: DELETE
+                case eVehicle.Traktor:
+                    this.vehicle = new Traktor();
+                    break;
+
+
+
             }
         }
 
@@ -45,8 +52,10 @@ namespace Ex03.GarageLogic
 
             Motor,
 
-            Truk
+            Truk,
             // add more supported vehicles here
+
+            Traktor
         }
 
         public Vehicle Vehicle
