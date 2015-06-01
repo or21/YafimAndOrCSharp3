@@ -44,6 +44,11 @@ Press 'enter' to continue";
 Press 'enter' to continue";
 
         /// <summary>
+        /// Vehicle not found in the garage.
+        /// </summary>
+        private const string k_VehicleNotFound = "Vehicle not found. Please try again. (Press 'enter' to continue).";
+
+        /// <summary>
         /// Nothing was typed message.
         /// </summary>
         private const string k_NPEerror = "Nothing was typed. Error is: ";
@@ -244,25 +249,33 @@ Press 'enter' to continue";
             {
                 string licenseNumber = getLicenseNumberFromUser();
                 Garage.VehicleInGarage currentVehicle = s_Garage.FindVehicleByLicense(licenseNumber);
-                bool isRelevantEngine = currentVehicle.CurrVehicle.IsElectric
-                    ? i_Operation == eOperation.LoadEnergy
-                    : i_Operation == eOperation.LoadFuel;
-                if (isRelevantEngine)
+                if (currentVehicle.OwnerName == null)
                 {
-                    string fuelType = null;
-                    bool isFuel = i_Operation == eOperation.LoadFuel;
-                    if (isFuel)
-                    {
-                        fuelType = GetFuelFromUser();
-                    }
-
-                    float amountInFloat = getAmountToLoad();
-                    Garage.LoadPowerSourceForVehicle(currentVehicle.CurrVehicle, amountInFloat, fuelType);
-                    Console.WriteLine(k_PowerSourceLoadingSuccess);
+                    Console.WriteLine(k_VehicleNotFound);
                 }
                 else
                 {
-                    Console.WriteLine("The car engine doesn't match the required operation.");
+                    bool isRelevantEngine = currentVehicle.CurrVehicle.IsElectric
+                        ? i_Operation == eOperation.LoadEnergy
+                        : i_Operation == eOperation.LoadFuel;
+                    if (isRelevantEngine)
+                    {
+                        string fuelType = null;
+                        bool isFuel = i_Operation == eOperation.LoadFuel;
+                        if (isFuel)
+                        {
+                            fuelType = GetFuelFromUser();
+                        }
+
+                        Console.WriteLine("Current amount is: {0}", currentVehicle.CurrVehicle.PowerSource.CurrAmount);
+                        float amountInFloat = getAmountToLoad();
+                        Garage.LoadPowerSourceForVehicle(currentVehicle.CurrVehicle, amountInFloat, fuelType);
+                        Console.WriteLine(k_PowerSourceLoadingSuccess);
+                    }
+                    else
+                    {
+                        Console.WriteLine("The vehicle engine doesn't match the required operation.");
+                    }
                 }
             }
             catch (ValueOutOfRangeException vaore)
@@ -271,11 +284,7 @@ Press 'enter' to continue";
             }
             catch (ArgumentException ae)
             {
-                Console.WriteLine(ae);
-            }
-            catch (NullReferenceException nre)
-            {
-                Console.WriteLine("There is no vehicle with the relevant license number.");
+                Console.WriteLine(ae.Message);
             }
             finally
             {
@@ -334,8 +343,16 @@ Press 'enter' to continue";
         {
             string licenseNumber = getLicenseNumberFromUser();
             Garage.VehicleInGarage currentVehicle = s_Garage.FindVehicleByLicense(licenseNumber);
-            Garage.BlowAirForVehicel(currentVehicle.CurrVehicle);
-            Console.WriteLine(k_AirBlowSuccess);
+            if (currentVehicle.CurrVehicle != null)
+            {
+                Garage.BlowAirForVehicel(currentVehicle.CurrVehicle);
+                Console.WriteLine(k_AirBlowSuccess);
+            }
+            else
+            {
+                Console.WriteLine(k_VehicleNotFound);
+            }
+
             Console.ReadLine();
         }
 
@@ -348,31 +365,38 @@ Press 'enter' to continue";
             bool isStatusExists = false;
             string licenseNumber = getLicenseNumberFromUser();
             string currentVehicleStatus = s_Garage.FindVehicleStatus(licenseNumber);
-
-            while (!isStatusExists)
+            if (currentVehicleStatus == null)
             {
-                Console.WriteLine(@"The current status of the vehicle is: {0}", currentVehicleStatus);
-                Console.WriteLine("Please enter the new status that you want for the vehilce: ");
-                Console.Write("The options are: ");
-                int j;
-                int numberOfstates = Enum.GetNames(typeof(Garage.eStateInGarage)).Length;
-                for (j = 1; j < numberOfstates; j++)
-                {
-                    Console.Write("{0}, ", (Garage.eStateInGarage)j);
-                }
-
-                Console.WriteLine("{0}", (Garage.eStateInGarage)j);
-
-                newStatus = Console.ReadLine();
-                isStatusExists = Garage.CheckIfStatusIsExists(newStatus);
-                if (!isStatusExists)
-                {
-                    Console.WriteLine("Invalid status. let's try again");
-                }
+                Console.WriteLine(k_VehicleNotFound);
+                Console.ReadLine();
             }
+            else
+            {
+                while (!isStatusExists)
+                {
+                    Console.WriteLine(@"The current status of the vehicle is: {0}", currentVehicleStatus);
+                    Console.WriteLine("Please enter the new status that you want for the vehilce: ");
+                    Console.Write("The options are: ");
+                    int j;
+                    int numberOfstates = Enum.GetNames(typeof(Garage.eStateInGarage)).Length;
+                    for (j = 1; j < numberOfstates; j++)
+                    {
+                        Console.Write("{0}, ", (Garage.eStateInGarage)j);
+                    }
 
-            s_Garage.ChangeVehicleStatus(licenseNumber, newStatus);
-            Console.WriteLine("Status changed successfuly");
+                    Console.WriteLine("{0}", (Garage.eStateInGarage)j);
+
+                    newStatus = Console.ReadLine();
+                    isStatusExists = Garage.CheckIfStatusIsExists(newStatus);
+                    if (!isStatusExists)
+                    {
+                        Console.WriteLine("Invalid status. let's try again");
+                    }
+                }
+
+                s_Garage.ChangeVehicleStatus(licenseNumber, newStatus);
+                Console.WriteLine("Status changed successfuly");
+            }
         }
 
         /// <summary>
@@ -465,8 +489,13 @@ Press 'enter' to continue";
                 Console.WriteLine(lookForVehicle.CurrVehicle.VehicleToString());
                 Console.WriteLine();
                 Console.WriteLine("Press 'enter' to continue");
-                Console.ReadLine();
             }
+            else
+            {
+                Console.WriteLine(k_VehicleNotFound);
+            }
+
+            Console.ReadLine();
         }
 
         /// <summary>

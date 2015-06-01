@@ -3,6 +3,8 @@
 // Yafim Vodkov 308973882 Or Brand 302521034
 // </copyright>
 //----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
@@ -98,6 +100,16 @@ namespace Ex03.GarageLogic
         protected internal bool m_IsElectric;
 
         /// <summary>
+        /// Vehicle can have elctric engine
+        /// </summary>
+        protected internal bool m_HasElectricEngineOption;
+
+        /// <summary>
+        /// Vehicle can have fuel engine
+        /// </summary>
+        protected internal bool m_HasFuelEngineOption;
+
+        /// <summary>
         /// Current vehicle max air pressure.
         /// </summary>
         private float m_MaxAir;
@@ -140,7 +152,7 @@ namespace Ex03.GarageLogic
         /// <param name="i_FuelType">Fuel type</param>
         public void SetEngine(float i_MaxAmount, Fuel.eFuelType i_FuelType)
         {
-            this.m_PowerSource = m_IsElectric ? new Energy(0, i_MaxAmount) : new Fuel(0, i_MaxAmount, i_FuelType);
+            PowerSource = m_IsElectric ? new Energy(0, i_MaxAmount) : new Fuel(0, i_MaxAmount, i_FuelType);
         }
 
         /// <summary>
@@ -178,8 +190,16 @@ namespace Ex03.GarageLogic
             IsElectric = bool.Parse((string)VehicleDictionary[k_IsElecQuestion]);
             float maxPowerSource = IsElectric ? MaxEnergy : MaxFuel;
 
-            SetEngine(maxPowerSource, FuelType);
-            this.m_PowerSource.CurrAmount = float.Parse((string)VehicleDictionary[k_AmountPSQuestion]);
+            bool checkAvailableEngines = (HasElectOption && IsElectric) || (HasFuelOption && !IsElectric);
+            if (checkAvailableEngines)
+            {
+                SetEngine(maxPowerSource, FuelType);
+                PowerSource.CurrAmount = float.Parse((string) VehicleDictionary[k_AmountPSQuestion]);
+            }
+            else
+            {
+                throw new ArgumentException("Required engine is not supported by this vehicle.");
+            }
 
             float currentAmountOfAirPressure = float.Parse((string)VehicleDictionary[k_CurrAmounAirQuestion]);
             m_MaxAir = IsElectric ? ElectricMaxAir : FuelMaxAir;
@@ -270,6 +290,33 @@ namespace Ex03.GarageLogic
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether has electric engine option.
+        /// </summary>
+        public bool HasElectOption
+        {
+            get { return this.m_HasElectricEngineOption; }
+            set { this.m_HasElectricEngineOption = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether has fuel engine option.
+        /// </summary>
+        public bool HasFuelOption
+        {
+            get { return this.m_HasFuelEngineOption; }
+            set { this.m_HasFuelEngineOption = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a the power source of the vehicle.
+        /// </summary>
+        public Energy PowerSource
+        {
+            get { return m_PowerSource; }
+            set { m_PowerSource = value; }
+        }
+
+        /// <summary>
         /// Gets the string output vehicle properties.
         /// </summary>
         /// <returns>Vehicle properties.</returns>
@@ -287,7 +334,7 @@ namespace Ex03.GarageLogic
                 i++;
             }
 
-            dataToString += string.Format("Current amount of power source {0}\n", this.m_PowerSource.CurrAmount);
+            dataToString += string.Format("Current amount of power source {0}\n", PowerSource.CurrAmount);
 
             return dataToString;
         }

@@ -3,7 +3,6 @@
 // Yafim Vodkov 308973882 Or Brand 302521034
 // </copyright>
 //----------------------------------------------------------------------
-using System.Collections.Generic;
 
 namespace Ex03.GarageLogic
 {

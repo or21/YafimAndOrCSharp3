@@ -38,7 +38,9 @@ namespace Ex03.GarageLogic
             NumberOfWheels = 16;
             FuelMaxAir = 31;
             MaxFuel = (float)170;
-            FuelType = Fuel.eFuelType.Solar;
+            FuelType = Fuel.eFuelType.Soler;
+            HasFuelOption = true;
+            HasElectOption = false;
 
             // Set unique properties
             m_VehicleDictionary.Add(k_DangerousQuestion, false);
@@ -86,7 +88,7 @@ namespace Ex03.GarageLogic
 @"Fuel type is {0}
 Is carring dangerous materials: {1}
 Truck current cargo weight: {2}", 
-                               Fuel.eFuelType.Solar,
+                               Fuel.eFuelType.Soler,
                                this.m_IsCarryingDangerous,
                                this.m_CurrentCarryWeight);
 

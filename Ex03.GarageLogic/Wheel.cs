@@ -58,7 +58,7 @@ namespace Ex03.GarageLogic
 
             set
             {
-                if (value < this.m_MaxTirePressure)
+                if (value <= this.m_MaxTirePressure)
                 {
                     this.m_CurrentTirePressure = value;
                 }

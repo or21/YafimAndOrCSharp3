@@ -86,9 +86,9 @@ namespace Ex03.GarageLogic
             Octan98,
 
             /// <summary>
-            /// Solar type
+            /// Soler type
             /// </summary>
-            Solar
+            Soler
         }
     }
 }

@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.GarageLogic", "Ex03.Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex03.GarageManagementSystem.ConsuleUI", "Ex03.GarageManagementSystem.ConsuleUI\Ex03.GarageManagementSystem.ConsuleUI.csproj", "{C696A7CB-893A-46D9-BBE7-7710CC79855A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0FDDC391-168B-4C84-92F7-BD782C1C61BA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Desktop\B15 Ex03 Or 302521034 Yafim 308973882.docx = ..\..\..\..\Desktop\B15 Ex03 Or 302521034 Yafim 308973882.docx
+		..\..\..\..\Desktop\Exercise Checking Report.txt = ..\..\..\..\Desktop\Exercise Checking Report.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

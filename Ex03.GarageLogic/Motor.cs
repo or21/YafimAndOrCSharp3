@@ -43,6 +43,8 @@ namespace Ex03.GarageLogic
             MaxEnergy = (float)1.2;
             MaxFuel = (float)8;
             FuelType = Fuel.eFuelType.Octan98;
+            HasFuelOption = true;
+            HasElectOption = true;
 
             r_LicnseQuestion += " <";
             int i;
