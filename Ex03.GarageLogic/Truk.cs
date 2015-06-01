@@ -13,22 +13,22 @@ namespace Ex03.GarageLogic
         /// <summary>
         /// Unique property string.
         /// </summary>
-        private const string k_dangerousQuestion = "Is Carrying Dangerous <true/false>";
+        private const string k_DangerousQuestion = "Is Carrying Dangerous <true/false>";
 
         /// <summary>
         /// Unique property string.
         /// </summary>
-        private const string k_weightQuestion = "Current Carry Weight";
+        private const string k_WeightQuestion = "Current Carry Weight";
 
         /// <summary>
         /// If carries dangerous stuff.
         /// </summary>
-        private bool m_isCarryingDangerous;
+        private bool m_IsCarryingDangerous;
 
         /// <summary>
         /// Current carry weight.
         /// </summary>
-        private float m_currentCarryWeight;
+        private float m_CurrentCarryWeight;
 
         /// <summary>
         /// Initializes a new instance of the Truk class.
@@ -41,8 +41,8 @@ namespace Ex03.GarageLogic
             FuelType = Fuel.eFuelType.Solar;
 
             // Set unique properties
-            m_VehicleDictionary.Add(k_dangerousQuestion, false);
-            m_VehicleDictionary.Add(k_weightQuestion, -1);
+            m_VehicleDictionary.Add(k_DangerousQuestion, false);
+            m_VehicleDictionary.Add(k_WeightQuestion, -1);
         }
 
         /// <summary>
@@ -52,8 +52,8 @@ namespace Ex03.GarageLogic
         {
             base.SetProperties();
 
-            IsCarryingDangerous = bool.Parse((string)VehicleDictionary[k_dangerousQuestion]);
-            CurretCarryWeight = int.Parse((string)VehicleDictionary[k_weightQuestion]);
+            IsCarryingDangerous = bool.Parse((string)VehicleDictionary[k_DangerousQuestion]);
+            CurretCarryWeight = int.Parse((string)VehicleDictionary[k_WeightQuestion]);
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace Ex03.GarageLogic
         /// </summary>
         public float CurretCarryWeight
         {
-            get { return this.m_currentCarryWeight; }
-            set { this.m_currentCarryWeight = value; }
+            get { return this.m_CurrentCarryWeight; }
+            set { this.m_CurrentCarryWeight = value; }
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace Ex03.GarageLogic
         /// </summary>
         public bool IsCarryingDangerous
         {
-            get { return this.m_isCarryingDangerous; }
-            set { this.m_isCarryingDangerous = value; }
+            get { return this.m_IsCarryingDangerous; }
+            set { this.m_IsCarryingDangerous = value; }
         }
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace Ex03.GarageLogic
 @"Fuel type is {0}
 Is carring dangerous materials: {1}
 Truk current cargo weight: {2}", 
-                               FuelType, 
-                               this.m_isCarryingDangerous, 
-                               this.m_currentCarryWeight);
+                               Fuel.eFuelType.Solar,
+                               this.m_IsCarryingDangerous,
+                               this.m_CurrentCarryWeight);
 
             return trukData;
         }

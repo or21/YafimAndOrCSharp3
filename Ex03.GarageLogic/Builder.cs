@@ -66,13 +66,13 @@ namespace Ex03.GarageLogic
             switch (i_VehicleType)
             {
                 case eVehicle.Car:
-                    this.vehicle = new Car();
+                    this.r_Vehicle = new Car();
                     break;
                 case eVehicle.Motor:
-                    this.vehicle = new Motor();
+                    this.r_Vehicle = new Motor();
                     break;
                 case eVehicle.Truk:
-                    this.vehicle = new Truk();
+                    this.r_Vehicle = new Truk();
                     break;
 
                 /* Add more vehciles here */
@@ -98,7 +98,7 @@ namespace Ex03.GarageLogic
             /// Vehicle Truk
             /// </summary>
             Truk,
-            
+
             /* add more supported vehicles here */
         }
 
@@ -107,7 +107,7 @@ namespace Ex03.GarageLogic
         /// </summary>
         public Vehicle Vehicle
         {
-            get { return this.vehicle; }
+            get { return this.r_Vehicle; }
         }
     }
 }

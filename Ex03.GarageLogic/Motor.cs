@@ -44,17 +44,16 @@ namespace Ex03.GarageLogic
             MaxFuel = (float)8;
             FuelType = Fuel.eFuelType.Octan98;
 
-            r_licnseQuestion += " <";
+            r_LicnseQuestion += " <";
             int i;
             for (i = 0; i < Enum.GetNames(typeof(eLicense)).Length - 1; i++)
             {
-                r_licnseQuestion += (eLicense) i + ", ";
+                r_LicnseQuestion += (eLicense) i + ", ";
             }
 
-            r_licnseQuestion += (eLicense) i + ">";
-
-            m_VehicleDictionary.Add(r_licnseQuestion, new eLicense());
-            m_VehicleDictionary.Add(k_engineSizeQuestion, new int());
+            r_LicnseQuestion += (eLicense) i + ">";
+            m_VehicleDictionary.Add(r_LicnseQuestion, new eLicense());
+            m_VehicleDictionary.Add(k_EngineSizeQuestion, new int());
         }
 
         /// <summary>
@@ -63,8 +62,8 @@ namespace Ex03.GarageLogic
         public override void SetProperties()
         {
             base.SetProperties();
-            License = (eLicense) Enum.Parse(typeof(eLicense), (string) VehicleDictionary[r_licnseQuestion]);
-            Engine = int.Parse((string)VehicleDictionary[k_engineSizeQuestion]);
+            License = (eLicense) Enum.Parse(typeof(eLicense), (string) VehicleDictionary[r_LicnseQuestion]);
+            Engine = int.Parse((string)VehicleDictionary[k_EngineSizeQuestion]);
         }
 
         /// <summary>
@@ -72,8 +71,8 @@ namespace Ex03.GarageLogic
         /// </summary>
         public eLicense License
         {
-            get { return this.m_license; }
-            set { this.m_license = value; }
+            get { return this.m_License; }
+            set { this.m_License = value; }
         }
 
         /// <summary>
@@ -81,8 +80,8 @@ namespace Ex03.GarageLogic
         /// </summary>
         public int Engine
         {
-            get { return this.m_engine; }
-            set { this.m_engine = value; }
+            get { return this.m_Engine; }
+            set { this.m_Engine = value; }
         }
 
         /// <summary>
@@ -98,8 +97,8 @@ namespace Ex03.GarageLogic
                 motorData += string.Format("Fuel type is {0}\n", FuelType);
             }
 
-            motorData += string.Format("Type of license: {0}\n", this.m_license);
-            motorData += string.Format("Motor engine size: {0}\n", this.m_engine);
+            motorData += string.Format("Type of license: {0}\n", this.m_License);
+            motorData += string.Format("Motor engine size: {0}\n", this.m_Engine);
 
             return motorData;
         }

@@ -4,16 +4,16 @@ namespace Ex03.GarageLogic
 {
     public class Wheel
     {
-        private string m_manufacturer;
-        private float m_currentTirePressure;
-        private float m_maxTirePressure;
+        private string m_Manufacturer;
+        private float m_CurrentTirePressure;
+        private float m_MaxTirePressure;
 
         public void Inflate(float i_AirToAdd)
         {
             // TODO: Exception...
             try
             {
-                this.m_currentTirePressure += i_AirToAdd;
+                this.m_CurrentTirePressure += i_AirToAdd;
             }
             catch (ValueOutOfRangeException vore)
             {
@@ -22,30 +22,30 @@ namespace Ex03.GarageLogic
 
         public string Manufacturer
         {
-            get { return m_manufacturer; }
-            set { this.m_manufacturer = value; }
+            get { return m_Manufacturer; }
+            set { this.m_Manufacturer = value; }
         }
 
         public float CurrentTirePressure
         {
-            get { return this.m_currentTirePressure; }
+            get { return this.m_CurrentTirePressure; }
             set
             {
-                if (value < this.m_maxTirePressure)
+                if (value < this.m_MaxTirePressure)
                 {
-                    this.m_currentTirePressure = value;
+                    this.m_CurrentTirePressure = value;
                 }
                 else
                 {
-                    new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_maxTirePressure, 0);
+                    throw new ValueOutOfRangeException(new IndexOutOfRangeException(), this.m_MaxTirePressure, 0);
                 }
             }
         }
 
         public float MaxTirePressure
         {
-            get { return this.m_maxTirePressure; }
-            set { this.m_maxTirePressure = value; }
+            get { return this.m_MaxTirePressure; }
+            set { this.m_MaxTirePressure = value; }
         }
     }
 }
