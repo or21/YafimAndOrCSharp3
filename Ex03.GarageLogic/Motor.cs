@@ -1,15 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//----------------------------------------------------------------------
+// <copyright file="Motor.cs" company="B15_Ex03">
+// Yafim Vodkov 308973882 Or Brand 302521034
+// </copyright>
+//----------------------------------------------------------------------
+using System;
 
 namespace Ex03.GarageLogic
 {
+    /// <summary>
+    /// Motor class.
+    /// </summary>
     public class Motor : Vehicle
     {
+        /// <summary>
+        /// Unique property string.
+        /// </summary>
         private const string k_engineSizeQuestion = "Engine size";
+
+        /// <summary>
+        /// Unique property string.
+        /// </summary>
         private readonly string r_licnseQuestion = "License type";
+
+        /// <summary>
+        /// License type.
+        /// </summary>
         private eLicense m_license;
+
+        /// <summary>
+        /// Engine size.
+        /// </summary>
         private int m_engine;
         
+        /// <summary>
+        /// Initializes a new instance of the Motor class.
+        /// </summary>
         public Motor()
         {
             NumberOfWheels = 2;
@@ -32,6 +57,9 @@ namespace Ex03.GarageLogic
             m_VehicleDictionary.Add(k_engineSizeQuestion, new int());
         }
 
+        /// <summary>
+        /// Set general and unique properties of this vehicle.
+        /// </summary>
         public override void SetProperties()
         {
             base.SetProperties();
@@ -39,26 +67,35 @@ namespace Ex03.GarageLogic
             Engine = int.Parse((string)VehicleDictionary[k_engineSizeQuestion]);
         }
 
-        // Some getter and setters
+        /// <summary>
+        /// Gets or sets the license type.
+        /// </summary>
         public eLicense License
         {
             get { return this.m_license; }
             set { this.m_license = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the engine size.
+        /// </summary>
         public int Engine
         {
             get { return this.m_engine; }
             set { this.m_engine = value; }
         }
 
+        /// <summary>
+        /// Gets the string output vehicle properties.
+        /// </summary>
+        /// <returns>Vehicle properties.</returns>
         public override string VehicleToString()
         {
             string motorData = base.VehicleToString();
 
             if (!this.m_IsElectric)
             {
-                motorData += string.Format("Fuel type is {0}\n", Fuel.eFuelType.Octan98);
+                motorData += string.Format("Fuel type is {0}\n", FuelType);
             }
 
             motorData += string.Format("Type of license: {0}\n", this.m_license);
@@ -68,11 +105,29 @@ namespace Ex03.GarageLogic
         }
     }
 
+    /// <summary>
+    /// License type.
+    /// </summary>
     public enum eLicense
     {
+        /// <summary>
+        /// A type.
+        /// </summary>
         A = 0,
+
+        /// <summary>
+        /// A2 type.
+        /// </summary>
         A2,
+
+        /// <summary>
+        /// AB type.
+        /// </summary>
         AB,
+
+        /// <summary>
+        /// B1 type.
+        /// </summary>
         B1
     }
 }

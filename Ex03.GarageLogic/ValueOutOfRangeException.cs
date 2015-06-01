@@ -1,9 +1,20 @@
-﻿using System;
+﻿//----------------------------------------------------------------------
+// <copyright file="ValueOutOfRangeException.cs" company="B15_Ex03">
+// Yafim Vodkov 308973882 Or Brand 302521034
+// </copyright>
+//----------------------------------------------------------------------
+using System;
 
 namespace Ex03.GarageLogic
 {
+    /// <summary>
+    /// ValueOutOfRangeException class.
+    /// </summary>
     public class ValueOutOfRangeException : Exception
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private float m_maxValue;
         private float m_minValue;
 
