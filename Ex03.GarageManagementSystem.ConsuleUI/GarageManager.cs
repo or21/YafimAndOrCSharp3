@@ -7,12 +7,29 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
 {
     public class GarageManager
     {
-        private const string v_ExitCode = "exit";
-        private static Garage garage;
+        private const string k_VehicleAlreadyInGarage = 
+@"This vehicle is already in the garage.
+The system will change it's state to 'In Process'";
+
+        private const string k_AEerror =
+@"There was an error in your input: {0}
+Try again to insert a vehicle";
+
+        private const string k_PowerSourceLoadingSuccess =
+@"Power source loaded successfuly
+Press 'enter' to continue";
+
+        private const string k_AirBlowSuccess = 
+@"Air blowed successfuly
+Press 'enter' to continue";
+
+        private const string k_NPEerror = "Nothing was typed. Error is: ";
+        private const string k_ExitCode = "exit";
+        private static Garage s_garage;
 
         public GarageManager()
         {
-            garage = new Garage();
+            s_garage = new Garage();
         }
 
         private static void makeOperation(int i_InputNumber)
@@ -48,70 +65,54 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
             try
             {
                 string licenseNumber = getLicenseNumberFromUser();
-                Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+                Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
                 if (currentVehicle.m_Vehicle != null)
                 {
-                    Console.WriteLine(
-@"This vehicle is already in the garage.
-The system will change it's state to 'In Process'");
-                    string status = "InProcess";
-                    garage.ChangeVehicleStatus(licenseNumber, status);
+                    Console.WriteLine(k_VehicleAlreadyInGarage);
+                    const string k_status = "InProcess";
+                    s_garage.ChangeVehicleStatus(licenseNumber, k_status);
                 }
                 else
                 {
                     string vehicleType = getTypeOfVehicleInformation();
                     string ownerName = getOwnerNameInformation();
                     string phoneNumber = getPhoneNumberInformation();
-                    Garage.VehicleInGarage newVehicleInGarage = garage.CreateVehicle(vehicleType, licenseNumber,
-                        ownerName, phoneNumber);
+                    Garage.VehicleInGarage newVehicleInGarage = s_garage.CreateVehicle(
+                        vehicleType, licenseNumber, ownerName, phoneNumber);
                     newVehicleInGarage.m_Vehicle.Id = licenseNumber;
                     fillParams(newVehicleInGarage);
-                    garage.AddVehicle(newVehicleInGarage);
+                    s_garage.AddVehicle(newVehicleInGarage);
+                    Console.WriteLine("Vehicle inserted successfully. Press 'enter' to continue");
                 }
             }
             catch (ArgumentException ae)
             {
-                Console.WriteLine(
-@"There was an error in your input.
-Try again to insert a vehicle");
-                Console.ReadLine();
+                Console.WriteLine(k_AEerror, ae.Message);
             }
             catch (FormatException fe)
             {
                 Console.WriteLine(fe.Message);
-                Console.ReadLine();
-        }
+            }
             catch (ValueOutOfRangeException vore)
             {
                 Console.WriteLine(vore.Message);
-                Console.ReadLine();
             }
             catch (NullReferenceException nre)
             {
-                Console.WriteLine("Nothing was typed");
+                Console.WriteLine(k_NPEerror + nre.Message);
+            }
+            finally
+            {
                 Console.ReadLine();
             }
-
         }
 
         private static string getOwnerNameInformation()
         {
-            bool waitingForInput = true;
             Console.Write("Please enter your name: ");
-            string lNumber = "";
+            string lNumber = Console.ReadLine();
+            // This method exists for future logic for owner name.
 
-            while (waitingForInput)
-            {
-                lNumber = Console.ReadLine();
-                if (containsOnlyChars(lNumber))
-                {
-                    waitingForInput = false;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input");
-                }
-            }
             return lNumber;
         }
 
@@ -119,7 +120,8 @@ Try again to insert a vehicle");
         {
             Console.Write("Please enter your phone number: ");
             string lNumber = Console.ReadLine();
-            // TODO: some logic of phone number validity
+            // This method exists for future logic for phone number.
+
             return lNumber;
         }
 
@@ -138,15 +140,15 @@ Try again to insert a vehicle");
         {
             bool isValidType = false;
             string typeOfVehicle = null;
-            int numberOfVehicleTypes = sizeof(Builder.eVehicle);
+            int numberOfVehicleTypes = Enum.GetNames(typeof(Builder.eVehicle)).Length;
             while (!isValidType)
             {
                 int numberOfSupportedVechicle = Enum.GetNames(typeof (Builder.eVehicle)).Length;
-
-                Console.WriteLine(@"Please enter the type of your vehicle (can be on of the {0} options): ",
+                Console.WriteLine(
+@"Please enter the type of your vehicle (can be on of the {0} options): ",
                     numberOfSupportedVechicle);
                 int i;
-                for (i = 1; i < numberOfVehicleTypes - 1; i++)
+                for (i = 1; i < numberOfVehicleTypes; i++)
                 {
                     Console.Write("{0}, ", (Builder.eVehicle)i);
                 }
@@ -167,27 +169,37 @@ Try again to insert a vehicle");
 
         private static void loadPowerSourceForVehicle(eOperation i_Operation)
         {
-            //TODO: add check if the load is for the real power source
             string licenseNumber = getLicenseNumberFromUser();
-            Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
-            string fuelType = null;
-            bool isFuel = i_Operation == eOperation.LoadFuel;
-            if (isFuel)
+            Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
+            bool isRelevantEngine = currentVehicle.m_Vehicle.IsElectric ? i_Operation == eOperation.LoadEnergy : i_Operation == eOperation.LoadFuel;
+            if (isRelevantEngine)
             {
-                bool isLegalFuel = false;
-                while (!isLegalFuel)
+                string fuelType = null;
+                bool isFuel = i_Operation == eOperation.LoadFuel;
+                if (isFuel)
                 {
-                    fuelType = GetFuelFromUser();
-                    isLegalFuel = Fuel.IsValidFuelType(fuelType);
-                    if (!isLegalFuel)
+                    bool isLegalFuel = false;
+                    while (!isLegalFuel)
                     {
-                        Console.WriteLine("Fuel type does not exists. Please try again.");
+                        fuelType = GetFuelFromUser();
+                        isLegalFuel = Fuel.IsValidFuelType(fuelType);
+                        if (!isLegalFuel)
+                        {
+                            Console.WriteLine("Fuel type does not exists. Please try again.");
+                        }
                     }
                 }
-            }
 
-            float amountInFloat = getAmountToLoad();
-            Garage.LoadPowerSourceForVehicle(currentVehicle.m_Vehicle, amountInFloat, fuelType);
+                float amountInFloat = getAmountToLoad();
+                Garage.LoadPowerSourceForVehicle(currentVehicle.m_Vehicle, amountInFloat, fuelType);
+                Console.WriteLine(k_PowerSourceLoadingSuccess);
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("The car engine doesn't match the required operation.");
+                Console.ReadLine();
+            }
         }
 
         public static string GetFuelFromUser()
@@ -219,10 +231,9 @@ Try again to insert a vehicle");
         private static void blowAirForVehicle()
         {
             string licenseNumber = getLicenseNumberFromUser();
-            Garage.VehicleInGarage currentVehicle = garage.FindVehicleByLicense(licenseNumber);
+            Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
             Garage.BlowAirForVehicel(currentVehicle.m_Vehicle);
-            Console.WriteLine("Air blowed successfuly");
-            Console.WriteLine("Press 'enter' to continue");
+            Console.WriteLine(k_AirBlowSuccess);
             Console.ReadLine();
         }
 
@@ -231,7 +242,7 @@ Try again to insert a vehicle");
             string newStatus = null;
             bool isStatusExists = false;
             string licenseNumber = getLicenseNumberFromUser();
-            string currentVehicleStatus = garage.FindVehicleStatus(licenseNumber);
+            string currentVehicleStatus = s_garage.FindVehicleStatus(licenseNumber);
 
             while (!isStatusExists)
             {
@@ -239,7 +250,8 @@ Try again to insert a vehicle");
                 Console.WriteLine("Please enter the new status that you want for the vehilce: ");
                 Console.Write("The options are: ");
                 int j;
-                for (j = 1; j < sizeof(Garage.eStateInGarage) - 1; j++)
+                int numberOfstates = Enum.GetNames(typeof (Garage.eStateInGarage)).Length;
+                for (j = 1; j < numberOfstates; j++)
                 {
                     Console.Write("{0}, ", (Garage.eStateInGarage)j);
                 }
@@ -254,7 +266,7 @@ Try again to insert a vehicle");
                 }
             }
 
-            garage.ChangeVehicleStatus(licenseNumber, newStatus);
+            s_garage.ChangeVehicleStatus(licenseNumber, newStatus);
             Console.WriteLine("Status changed successfuly");
         }
 
@@ -276,7 +288,7 @@ Try again to insert a vehicle");
                     Console.WriteLine();
                 }
 
-                Dictionary<string, string> licenseAndState = garage.GetAllVehiclesByLicense(status);
+                Dictionary<string, string> licenseAndState = s_garage.GetAllVehiclesByLicense(status);
             int i = 1;
             foreach (string licenseNumber in licenseAndState.Keys)
             {
@@ -302,7 +314,8 @@ Try again to insert a vehicle");
             Console.WriteLine("Please enter status to filter by: ");
             Console.Write("The options are: ");
             int j;
-            for (j = 1; j < sizeof(Garage.eStateInGarage) - 1; j++)
+            int numberOfstates = Enum.GetNames(typeof(Garage.eStateInGarage)).Length;
+            for (j = 1; j < numberOfstates; j++)
             {
                 Console.Write("{0}, ", (Garage.eStateInGarage) j);
             }
@@ -316,14 +329,14 @@ Try again to insert a vehicle");
         {
             Console.Write("Please enter the vehicle license number: ");
             string lNumber = Console.ReadLine();
-            // TODO: some logic of license number validity
+            // this method exsits for future logic on license number
             return lNumber;
         }
 
         private static void showDataForVehicle()
         {
             string lNumber = getLicenseNumberFromUser();
-            Garage.VehicleInGarage lookForVehicle = garage.FindVehicleByLicense(lNumber);
+            Garage.VehicleInGarage lookForVehicle = s_garage.FindVehicleByLicense(lNumber);
 
             if (lookForVehicle.m_Vehicle != null)
             {
@@ -383,34 +396,13 @@ Try again to insert a vehicle");
 7. Show data on specific vehicle";
                 Console.WriteLine(v_WelcomMessage);
                 string chosenOption = Console.ReadLine();
-                isExitCode = chosenOption == v_ExitCode;
+                isExitCode = chosenOption == k_ExitCode;
                 if (!isExitCode)
                 {
                     int inputNumber = checkValidInput(chosenOption);
                     makeOperation(inputNumber);
                 }
             }
-        }
-
-        /// <summary>
-        /// Checks if string contains only chars.
-        /// </summary>
-        /// <param name="i_StringToCheck">String to check</param>
-        /// <returns>If valid or not</returns>
-        private static bool containsOnlyChars(string i_StringToCheck)
-        {
-            bool isChar = false;
-
-            for (int i = 0; i < i_StringToCheck.Length; i++)
-            {
-                isChar = char.IsLetter(i_StringToCheck[i]);
-                if (!isChar)
-                {
-                    break;
-                }
-            }
-
-            return isChar;
         }
 
         private static string parseString(string i_StringToParse)
