@@ -1,14 +1,14 @@
 ﻿//----------------------------------------------------------------------
-// <copyright file="Truk.cs" company="B15_Ex03">
+// <copyright file="Truck.cs" company="B15_Ex03">
 // Yafim Vodkov 308973882 Or Brand 302521034
 // </copyright>
 //----------------------------------------------------------------------
 namespace Ex03.GarageLogic
 {
     /// <summary>
-    /// Truk class.
+    /// Truck class.
     /// </summary>
-    public class Truk : Vehicle
+    public class Truck : Vehicle
     {
         /// <summary>
         /// Unique property string.
@@ -31,9 +31,9 @@ namespace Ex03.GarageLogic
         private float m_CurrentCarryWeight;
 
         /// <summary>
-        /// Initializes a new instance of the Truk class.
+        /// Initializes a new instance of the Truck class.
         /// </summary>
-        public Truk()
+        public Truck()
         {
             NumberOfWheels = 16;
             FuelMaxAir = 31;
@@ -80,17 +80,17 @@ namespace Ex03.GarageLogic
         /// <returns>Vehicle properties.</returns>
         public override string VehicleToString()
         {
-            string trukData = base.VehicleToString();
+            string truckData = base.VehicleToString();
 
-            trukData += string.Format(
+            truckData += string.Format(
 @"Fuel type is {0}
 Is carring dangerous materials: {1}
-Truk current cargo weight: {2}", 
+Truck current cargo weight: {2}", 
                                Fuel.eFuelType.Solar,
                                this.m_IsCarryingDangerous,
                                this.m_CurrentCarryWeight);
 
-            return trukData;
+            return truckData;
         }
     }
 }

@@ -12,49 +12,10 @@ namespace Ex03.GarageLogic
     /// </summary>
     public class Builder
     {
-        /* General fields for all viehicles */
-
-        /// <summary>
-        /// Unique properties of the vehicle.
-        /// </summary>
-        private List<object> m_uniqueProperties;
-
-        /// <summary>
-        /// Vehicle type.
-        /// </summary>
-        private eVehicle m_vehicle;
-
         /// <summary>
         /// Instance of vehicle.
         /// </summary>
-        private Vehicle vehicle;
-
-        /// <summary>
-        /// The form to be filled by the user.
-        /// </summary>
-        private Dictionary<string, object> m_vehicleDictionary;
-
-        /* Some helper variables */
-
-        /// <summary>
-        /// If vehicle is electric.
-        /// </summary>
-        private bool isElectric;
-
-        /// <summary>
-        /// Current amount of power source.
-        /// </summary>
-        private float m_currentAmountOfPowerSource;
-
-        /// <summary>
-        /// Current amount of air pressure.
-        /// </summary>
-        private float m_currentAmountOfAirPressure;
-
-        /// <summary>
-        /// Max air in tires.
-        /// </summary>
-        private float m_maxAir;
+        private readonly Vehicle r_Vehicle;
 
         /// <summary>
         /// Initializes a new instance of the Builder class.
@@ -71,8 +32,8 @@ namespace Ex03.GarageLogic
                 case eVehicle.Motor:
                     this.r_Vehicle = new Motor();
                     break;
-                case eVehicle.Truk:
-                    this.r_Vehicle = new Truk();
+                case eVehicle.Truck:
+                    this.r_Vehicle = new Truck();
                     break;
 
                 /* Add more vehciles here */
@@ -95,9 +56,9 @@ namespace Ex03.GarageLogic
             Motor,
 
             /// <summary>
-            /// Vehicle Truk
+            /// Vehicle Truck
             /// </summary>
-            Truk,
+            Truck,
 
             /* add more supported vehicles here */
         }
