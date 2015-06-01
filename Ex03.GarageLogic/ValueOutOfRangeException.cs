@@ -4,26 +4,26 @@ namespace Ex03.GarageLogic
 {
     public class ValueOutOfRangeException : Exception
     {
-        private float m_maxValue;
-        private float m_minValue;
+        private float m_MaxValue;
+        private float m_MinValue;
 
         public ValueOutOfRangeException(Exception i_InnerException, float i_MaxValue, float i_MinValue)
             : base(string.Format("The specified value is out of range. " + "Allowed range is [{0}-{1}]", i_MinValue, i_MaxValue), i_InnerException)
         {
-            this.m_maxValue = i_MaxValue;
-            this.m_minValue = i_MinValue;
+            this.m_MaxValue = i_MaxValue;
+            this.m_MinValue = i_MinValue;
         }
 
         public float MaxValue
         {
-            get { return this.m_maxValue; }
-            set { m_maxValue = value; }
+            get { return this.m_MaxValue; }
+            set { m_MaxValue = value; }
         }
 
         public float MinValue
         {
-            get { return this.m_minValue; }
-            set { m_minValue = value; }
+            get { return this.m_MinValue; }
+            set { m_MinValue = value; }
         }
     }
 }

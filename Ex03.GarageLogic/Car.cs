@@ -4,10 +4,10 @@ namespace Ex03.GarageLogic
 {
     public class Car : Vehicle
     {
-        private readonly string r_colorQuestion = "Color";
-        private readonly string r_numberOfDoorsQuestion = "Number Of Doors";
-        private eColor m_color;
-        private eDoors m_numberOfDoors;
+        private readonly string r_ColorQuestion = "Color";
+        private readonly string r_NumberOfDoorsQuestion = "Number Of Doors";
+        private eColor m_Color;
+        private eDoors m_NumberOfDoors;
 
         public Car()
         {
@@ -18,46 +18,46 @@ namespace Ex03.GarageLogic
             MaxFuel = (float)35;
             FuelType = Fuel.eFuelType.Octan96;
 
-            r_colorQuestion += " <";
+            r_ColorQuestion += " <";
             int i;
             for (i = 1; i < Enum.GetNames(typeof(eColor)).Length; i++)
             {
-                r_colorQuestion += (eColor)i + ", ";
+                r_ColorQuestion += (eColor)i + ", ";
             }
 
-            r_colorQuestion += (eColor)i + ">";
+            r_ColorQuestion += (eColor)i + ">";
 
-            r_numberOfDoorsQuestion += " <";
+            r_NumberOfDoorsQuestion += " <";
             int j;
             for (j = 2; j < Enum.GetNames(typeof(eDoors)).Length + 1; j++)
             {
-                r_numberOfDoorsQuestion += (eDoors)j + ", ";
+                r_NumberOfDoorsQuestion += (eDoors)j + ", ";
             }
 
-            r_numberOfDoorsQuestion += (eDoors)j + ">";
+            r_NumberOfDoorsQuestion += (eDoors)j + ">";
 
-            m_VehicleDictionary.Add(r_colorQuestion, null);
-            m_VehicleDictionary.Add(r_numberOfDoorsQuestion, null);
+            m_VehicleDictionary.Add(r_ColorQuestion, null);
+            m_VehicleDictionary.Add(r_NumberOfDoorsQuestion, null);
         }
 
         // Some setters and getters
         public eDoors Doors
         {
-            get { return this.m_numberOfDoors; }
-            set { this.m_numberOfDoors = value; }
+            get { return this.m_NumberOfDoors; }
+            set { this.m_NumberOfDoors = value; }
         }
 
         public eColor Color
         {
-            get { return this.m_color; }
-            set { this.m_color = value; }
+            get { return this.m_Color; }
+            set { this.m_Color = value; }
         }
 
         public override void SetProperties()
         {
             base.SetProperties();
-            Color = (eColor)Enum.Parse(typeof(eColor), (string)VehicleDictionary[r_colorQuestion]);
-            Doors = (eDoors)Enum.Parse(typeof(eDoors), (string)VehicleDictionary[r_numberOfDoorsQuestion]);
+            Color = (eColor)Enum.Parse(typeof(eColor), (string)VehicleDictionary[r_ColorQuestion]);
+            Doors = (eDoors)Enum.Parse(typeof(eDoors), (string)VehicleDictionary[r_NumberOfDoorsQuestion]);
         }
 
         public override string VehicleToString()
@@ -72,8 +72,8 @@ namespace Ex03.GarageLogic
             carData += string.Format(
 @"Number of doors: {0}
 Car color is: {1}", 
-                  this.m_numberOfDoors, 
-                  this.m_color);
+                  this.m_NumberOfDoors, 
+                  this.m_Color);
 
             return carData;
         }

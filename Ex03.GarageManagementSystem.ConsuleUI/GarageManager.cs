@@ -7,7 +7,7 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
 {
     public class GarageManager
     {
-        private const string k_VehicleAlreadyInGarage = 
+        private const string k_VehicleAlreadyInGarage =
 @"This vehicle is already in the garage.
 The system will change it's state to 'In Process'";
 
@@ -19,17 +19,17 @@ Try again to insert a vehicle";
 @"Power source loaded successfuly
 Press 'enter' to continue";
 
-        private const string k_AirBlowSuccess = 
+        private const string k_AirBlowSuccess =
 @"Air blowed successfuly
 Press 'enter' to continue";
 
         private const string k_NPEerror = "Nothing was typed. Error is: ";
         private const string k_ExitCode = "exit";
-        private static Garage s_garage;
+        private static Garage s_Garage;
 
         public GarageManager()
         {
-            s_garage = new Garage();
+            s_Garage = new Garage();
         }
 
         private static void makeOperation(int i_InputNumber)
@@ -64,26 +64,7 @@ Press 'enter' to continue";
         {
             try
             {
-                string licenseNumber = getLicenseNumberFromUser();
-                Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
-                if (currentVehicle.CurrVehicle != null)
-                {
-                    Console.WriteLine(k_VehicleAlreadyInGarage);
-                    const string k_status = "InProcess";
-                    s_garage.ChangeVehicleStatus(licenseNumber, k_status);
-                }
-                else
-                {
-                    string vehicleType = getTypeOfVehicleInformation();
-                    string ownerName = getOwnerNameInformation();
-                    string phoneNumber = getPhoneNumberInformation();
-                    Garage.VehicleInGarage newVehicleInGarage = s_garage.CreateVehicle(
-                        vehicleType, licenseNumber, ownerName, phoneNumber);
-                    newVehicleInGarage.CurrVehicle.Id = licenseNumber;
-                    fillParams(newVehicleInGarage);
-                    s_garage.AddVehicle(newVehicleInGarage);
-                    Console.WriteLine("Vehicle inserted successfully. Press 'enter' to continue");
-                }
+                insertToGarageOpertaions();
             }
             catch (ArgumentException ae)
             {
@@ -104,6 +85,30 @@ Press 'enter' to continue";
             finally
             {
                 Console.ReadLine();
+            }
+        }
+
+        private static void insertToGarageOpertaions()
+        {
+            string licenseNumber = getLicenseNumberFromUser();
+            Garage.VehicleInGarage currentVehicle = s_Garage.FindVehicleByLicense(licenseNumber);
+            if (currentVehicle.CurrVehicle != null)
+            {
+                Console.WriteLine(k_VehicleAlreadyInGarage);
+                const string k_Status = "InProcess";
+                s_Garage.ChangeVehicleStatus(licenseNumber, k_Status);
+            }
+            else
+            {
+                string vehicleType = getTypeOfVehicleInformation();
+                string ownerName = getOwnerNameInformation();
+                string phoneNumber = getPhoneNumberInformation();
+                Garage.VehicleInGarage newVehicleInGarage = s_Garage.CreateVehicle(
+                    vehicleType, licenseNumber, ownerName, phoneNumber);
+                newVehicleInGarage.CurrVehicle.Id = licenseNumber;
+                fillParams(newVehicleInGarage);
+                s_Garage.AddVehicle(newVehicleInGarage);
+                Console.WriteLine("Vehicle inserted successfully. Press 'enter' to continue");
             }
         }
 
@@ -143,7 +148,7 @@ Press 'enter' to continue";
             int numberOfVehicleTypes = Enum.GetNames(typeof(Builder.eVehicle)).Length;
             while (!isValidType)
             {
-                int numberOfSupportedVechicle = Enum.GetNames(typeof (Builder.eVehicle)).Length;
+                int numberOfSupportedVechicle = Enum.GetNames(typeof(Builder.eVehicle)).Length;
                 Console.WriteLine(
 @"Please enter the type of your vehicle (can be on of the {0} options): ",
                     numberOfSupportedVechicle);
@@ -169,45 +174,65 @@ Press 'enter' to continue";
 
         private static void loadPowerSourceForVehicle(eOperation i_Operation)
         {
-            string licenseNumber = getLicenseNumberFromUser();
-            Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
-            bool isRelevantEngine = currentVehicle.CurrVehicle.IsElectric ? i_Operation == eOperation.LoadEnergy : i_Operation == eOperation.LoadFuel;
-            if (isRelevantEngine)
+            try
             {
-                string fuelType = null;
-                bool isFuel = i_Operation == eOperation.LoadFuel;
-                if (isFuel)
+                string licenseNumber = getLicenseNumberFromUser();
+                Garage.VehicleInGarage currentVehicle = s_Garage.FindVehicleByLicense(licenseNumber);
+                bool isRelevantEngine = currentVehicle.CurrVehicle.IsElectric
+                    ? i_Operation == eOperation.LoadEnergy
+                    : i_Operation == eOperation.LoadFuel;
+                if (isRelevantEngine)
                 {
-                    bool isLegalFuel = false;
-                    while (!isLegalFuel)
+                    string fuelType = null;
+                    bool isFuel = i_Operation == eOperation.LoadFuel;
+                    if (isFuel)
                     {
                         fuelType = GetFuelFromUser();
-                        isLegalFuel = Fuel.IsValidFuelType(fuelType);
-                        if (!isLegalFuel)
-                        {
-                            Console.WriteLine("Fuel type does not exists. Please try again.");
-                        }
                     }
-                }
 
-                float amountInFloat = getAmountToLoad();
-                Garage.LoadPowerSourceForVehicle(currentVehicle.CurrVehicle, amountInFloat, fuelType);
-                Console.WriteLine(k_PowerSourceLoadingSuccess);
-                Console.ReadLine();
+                    float amountInFloat = getAmountToLoad();
+                    Garage.LoadPowerSourceForVehicle(currentVehicle.CurrVehicle, amountInFloat, fuelType);
+                    Console.WriteLine(k_PowerSourceLoadingSuccess);
+                }
+                else
+                {
+                    Console.WriteLine("The car engine doesn't match the required operation.");
+                }
             }
-            else
+            catch (ValueOutOfRangeException vaore)
             {
-                Console.WriteLine("The car engine doesn't match the required operation.");
+                Console.WriteLine(vaore.Message);
+            }
+            catch (ArgumentException ae)
+            {
+                Console.WriteLine("Fuel type doesn't match to car fuel type");
+            }
+            catch (NullReferenceException nre)
+            {
+                Console.WriteLine("There is no vehicle with the relevant license number.");
+            }
+            finally
+            {
                 Console.ReadLine();
             }
         }
 
         public static string GetFuelFromUser()
         {
-            Console.Write("Please enter fuel type to load: ");
-            string resultType = Console.ReadLine();
+            bool isLegalFuel = false;
+            string fuelType = null;
+            while (!isLegalFuel)
+            {
+                Console.Write("Please enter fuel type to load: ");
+                fuelType = Console.ReadLine();
+                isLegalFuel = Fuel.IsValidFuelType(fuelType);
+                if (!isLegalFuel)
+                {
+                    Console.WriteLine("Fuel type does not exists. Please try again.");
+                }
+            }
 
-            return resultType;
+            return fuelType;
         }
 
         private static float getAmountToLoad()
@@ -231,7 +256,7 @@ Press 'enter' to continue";
         private static void blowAirForVehicle()
         {
             string licenseNumber = getLicenseNumberFromUser();
-            Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
+            Garage.VehicleInGarage currentVehicle = s_Garage.FindVehicleByLicense(licenseNumber);
             Garage.BlowAirForVehicel(currentVehicle.CurrVehicle);
             Console.WriteLine(k_AirBlowSuccess);
             Console.ReadLine();
@@ -242,7 +267,7 @@ Press 'enter' to continue";
             string newStatus = null;
             bool isStatusExists = false;
             string licenseNumber = getLicenseNumberFromUser();
-            string currentVehicleStatus = s_garage.FindVehicleStatus(licenseNumber);
+            string currentVehicleStatus = s_Garage.FindVehicleStatus(licenseNumber);
 
             while (!isStatusExists)
             {
@@ -250,7 +275,7 @@ Press 'enter' to continue";
                 Console.WriteLine("Please enter the new status that you want for the vehilce: ");
                 Console.Write("The options are: ");
                 int j;
-                int numberOfstates = Enum.GetNames(typeof (Garage.eStateInGarage)).Length;
+                int numberOfstates = Enum.GetNames(typeof(Garage.eStateInGarage)).Length;
                 for (j = 1; j < numberOfstates; j++)
                 {
                     Console.Write("{0}, ", (Garage.eStateInGarage)j);
@@ -266,7 +291,7 @@ Press 'enter' to continue";
                 }
             }
 
-            s_garage.ChangeVehicleStatus(licenseNumber, newStatus);
+            s_Garage.ChangeVehicleStatus(licenseNumber, newStatus);
             Console.WriteLine("Status changed successfuly");
         }
 
@@ -284,21 +309,21 @@ Press 'enter' to continue";
                 }
                 else
                 {
-            Console.WriteLine("The current vehicles in the garage are:");
+                    Console.WriteLine("The current vehicles in the garage are:");
                     Console.WriteLine();
                 }
 
-                Dictionary<string, string> licenseAndState = s_garage.GetAllVehiclesByLicense(status);
-            int i = 1;
-            foreach (string licenseNumber in licenseAndState.Keys)
-            {
+                Dictionary<string, string> licenseAndState = s_Garage.GetAllVehiclesByLicense(status);
+                int i = 1;
+                foreach (string licenseNumber in licenseAndState.Keys)
+                {
                     Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber, licenseAndState[licenseNumber]);
-                i++;
-            }
+                    i++;
+                }
 
-            Console.WriteLine();
-            Console.WriteLine("Press 'enter' to continue");
-            Console.ReadLine();
+                Console.WriteLine();
+                Console.WriteLine("Press 'enter' to continue");
+                Console.ReadLine();
             }
             catch (ArgumentException ae)
             {
@@ -317,10 +342,10 @@ Press 'enter' to continue";
             int numberOfstates = Enum.GetNames(typeof(Garage.eStateInGarage)).Length;
             for (j = 1; j < numberOfstates; j++)
             {
-                Console.Write("{0}, ", (Garage.eStateInGarage) j);
+                Console.Write("{0}, ", (Garage.eStateInGarage)j);
             }
 
-            Console.WriteLine("{0}", (Garage.eStateInGarage) j);
+            Console.WriteLine("{0}", (Garage.eStateInGarage)j);
             string status = Console.ReadLine();
             return status;
         }
@@ -336,7 +361,7 @@ Press 'enter' to continue";
         private static void showDataForVehicle()
         {
             string lNumber = getLicenseNumberFromUser();
-            Garage.VehicleInGarage lookForVehicle = s_garage.FindVehicleByLicense(lNumber);
+            Garage.VehicleInGarage lookForVehicle = s_Garage.FindVehicleByLicense(lNumber);
 
             if (lookForVehicle.CurrVehicle != null)
             {
@@ -407,7 +432,7 @@ Press 'enter' to continue";
 
         private static string parseString(string i_StringToParse)
         {
-            return (i_StringToParse == "") ? null  : string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
+            return (i_StringToParse == "") ? null : string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
         }
 
         public enum eOperation

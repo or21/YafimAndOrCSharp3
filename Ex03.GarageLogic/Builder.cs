@@ -8,17 +8,7 @@ namespace Ex03.GarageLogic
     /// </summary>
     public class Builder
     {
-        // General fields for all viehicles
-        private List<object> m_uniqueProperties;
-        private eVehicle m_vehicle;
-        private Vehicle vehicle;
-        private Dictionary<string, object> m_vehicleDictionary;
-
-        // Some helper variables
-        private bool isElectric;
-        private float m_currentAmountOfPowerSource;
-        private float m_currentAmountOfAirPressure;
-        private float m_maxAir;
+        private readonly Vehicle r_Vehicle;
 
         public Builder(eVehicle i_VehicleType)
         {
@@ -26,23 +16,20 @@ namespace Ex03.GarageLogic
             switch (i_VehicleType)
             {
                 case eVehicle.Car:
-                    this.vehicle = new Car();
+                    this.r_Vehicle = new Car();
                     break;
                 case eVehicle.Motor:
-                    this.vehicle = new Motor();
+                    this.r_Vehicle = new Motor();
                     break;
                 case eVehicle.Truk:
-                    this.vehicle = new Truk();
+                    this.r_Vehicle = new Truk();
                     break;
 
                 // add more vehciles here
                     //TODO: DELETE
                 case eVehicle.Traktor:
-                    this.vehicle = new Traktor();
+                    this.r_Vehicle = new Traktor();
                     break;
-
-
-
             }
         }
 
@@ -60,7 +47,7 @@ namespace Ex03.GarageLogic
 
         public Vehicle Vehicle
         {
-            get { return this.vehicle; }
+            get { return this.r_Vehicle; }
         }
     }
 }
