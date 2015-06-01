@@ -72,10 +72,10 @@ namespace Ex03.GarageLogic
             builder = new Builder(vehicle);
             VehicleInGarage newVehicleInGarage = new VehicleInGarage
             {
-                m_Vehicle = builder.Vehicle,
-                m_State = eStateInGarage.InProcess,
-                m_OwnerName = i_OwnerName,
-                m_PhoneNumber = i_PhoneNumber
+                CurrVehicle = builder.Vehicle,
+                State = eStateInGarage.InProcess,
+                OwnerName = i_OwnerName,
+                PhoneNumber = i_PhoneNumber
             };
 
             return newVehicleInGarage;
@@ -83,10 +83,10 @@ namespace Ex03.GarageLogic
 
         public void AddVehicle(VehicleInGarage i_NewVehicleInGarage)
         {
-            i_NewVehicleInGarage.m_Vehicle.SetProperties();
-            if (!m_vehiclesInGarage.ContainsKey(i_NewVehicleInGarage.m_Vehicle.m_Id))
+            i_NewVehicleInGarage.CurrVehicle.SetProperties();
+            if (!m_vehiclesInGarage.ContainsKey(i_NewVehicleInGarage.CurrVehicle.m_Id))
             {
-                m_vehiclesInGarage.Add(i_NewVehicleInGarage.m_Vehicle.m_Id, i_NewVehicleInGarage);
+                m_vehiclesInGarage.Add(i_NewVehicleInGarage.CurrVehicle.m_Id, i_NewVehicleInGarage);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Ex03.GarageLogic
 
             if (isVehicleInGarage)
             {
-                status = m_vehiclesInGarage[i_LicenseNumber].m_State.ToString();
+                status = m_vehiclesInGarage[i_LicenseNumber].State.ToString();
             }
 
             return status;
@@ -127,10 +127,10 @@ namespace Ex03.GarageLogic
             Dictionary<string, string> resultList = new Dictionary<string, string>();
             foreach (string licenseNumber in m_vehiclesInGarage.Keys)
             {
-                bool isDesiredStatus = i_FilterBy == null || m_vehiclesInGarage[licenseNumber].m_State == desiredState;
+                bool isDesiredStatus = i_FilterBy == null || m_vehiclesInGarage[licenseNumber].State == desiredState;
                 if (isDesiredStatus)
                 {
-                    resultList.Add(licenseNumber, m_vehiclesInGarage[licenseNumber].m_State.ToString());
+                    resultList.Add(licenseNumber, m_vehiclesInGarage[licenseNumber].State.ToString());
                 }
             }
 
@@ -142,16 +142,16 @@ namespace Ex03.GarageLogic
             object newState = Enum.Parse(typeof(eStateInGarage), i_NewStatus);
 
             VehicleInGarage currVehicle = m_vehiclesInGarage[i_LicenseNumber];
-            currVehicle.m_State = (eStateInGarage)newState;
+            currVehicle.State = (eStateInGarage)newState;
             m_vehiclesInGarage[i_LicenseNumber] = currVehicle;
         }
 
         public struct VehicleInGarage
         {
-            public Vehicle m_Vehicle;
-            public eStateInGarage m_State;
-            public string m_OwnerName;
-            public string m_PhoneNumber;
+            private Vehicle m_Vehicle;
+            private eStateInGarage m_State;
+            private string m_OwnerName;
+            private string m_PhoneNumber;
 
             public override string ToString()
             {
@@ -165,6 +165,31 @@ Current state in the Garage: {2}",
 
                 return vehicleData;
             }
+
+            public Vehicle CurrVehicle
+            {
+                get { return m_Vehicle; }
+                set { m_Vehicle = value; }
+            }
+
+            public eStateInGarage State
+            {
+                get { return m_State; }
+                set { m_State = value; }
+            }
+
+            public string OwnerName
+            {
+                get { return m_OwnerName; }
+                set { m_OwnerName = value; }
+            }
+
+            public string PhoneNumber
+            {
+                get { return m_PhoneNumber; }
+                set { m_PhoneNumber = value; }
+            }
+
         }
 
         public enum eStateInGarage

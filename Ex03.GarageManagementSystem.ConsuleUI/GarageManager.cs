@@ -66,7 +66,7 @@ Press 'enter' to continue";
             {
                 string licenseNumber = getLicenseNumberFromUser();
                 Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
-                if (currentVehicle.m_Vehicle != null)
+                if (currentVehicle.CurrVehicle != null)
                 {
                     Console.WriteLine(k_VehicleAlreadyInGarage);
                     const string k_status = "InProcess";
@@ -79,7 +79,7 @@ Press 'enter' to continue";
                     string phoneNumber = getPhoneNumberInformation();
                     Garage.VehicleInGarage newVehicleInGarage = s_garage.CreateVehicle(
                         vehicleType, licenseNumber, ownerName, phoneNumber);
-                    newVehicleInGarage.m_Vehicle.Id = licenseNumber;
+                    newVehicleInGarage.CurrVehicle.Id = licenseNumber;
                     fillParams(newVehicleInGarage);
                     s_garage.AddVehicle(newVehicleInGarage);
                     Console.WriteLine("Vehicle inserted successfully. Press 'enter' to continue");
@@ -127,12 +127,12 @@ Press 'enter' to continue";
 
         private static void fillParams(Garage.VehicleInGarage i_NewVehicleInGarage)
         {
-            for (int i = 0; i < i_NewVehicleInGarage.m_Vehicle.VehicleDictionary.Count; i++)
+            for (int i = 0; i < i_NewVehicleInGarage.CurrVehicle.VehicleDictionary.Count; i++)
             {
-                string key = i_NewVehicleInGarage.m_Vehicle.VehicleDictionary.ElementAt(i).Key;
+                string key = i_NewVehicleInGarage.CurrVehicle.VehicleDictionary.ElementAt(i).Key;
                 Console.Write(key + ": ");
                 string input = Console.ReadLine();
-                i_NewVehicleInGarage.m_Vehicle.VehicleDictionary[key] = input;
+                i_NewVehicleInGarage.CurrVehicle.VehicleDictionary[key] = input;
             }
         }
 
@@ -171,7 +171,7 @@ Press 'enter' to continue";
         {
             string licenseNumber = getLicenseNumberFromUser();
             Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
-            bool isRelevantEngine = currentVehicle.m_Vehicle.IsElectric ? i_Operation == eOperation.LoadEnergy : i_Operation == eOperation.LoadFuel;
+            bool isRelevantEngine = currentVehicle.CurrVehicle.IsElectric ? i_Operation == eOperation.LoadEnergy : i_Operation == eOperation.LoadFuel;
             if (isRelevantEngine)
             {
                 string fuelType = null;
@@ -191,7 +191,7 @@ Press 'enter' to continue";
                 }
 
                 float amountInFloat = getAmountToLoad();
-                Garage.LoadPowerSourceForVehicle(currentVehicle.m_Vehicle, amountInFloat, fuelType);
+                Garage.LoadPowerSourceForVehicle(currentVehicle.CurrVehicle, amountInFloat, fuelType);
                 Console.WriteLine(k_PowerSourceLoadingSuccess);
                 Console.ReadLine();
             }
@@ -232,7 +232,7 @@ Press 'enter' to continue";
         {
             string licenseNumber = getLicenseNumberFromUser();
             Garage.VehicleInGarage currentVehicle = s_garage.FindVehicleByLicense(licenseNumber);
-            Garage.BlowAirForVehicel(currentVehicle.m_Vehicle);
+            Garage.BlowAirForVehicel(currentVehicle.CurrVehicle);
             Console.WriteLine(k_AirBlowSuccess);
             Console.ReadLine();
         }
@@ -338,10 +338,10 @@ Press 'enter' to continue";
             string lNumber = getLicenseNumberFromUser();
             Garage.VehicleInGarage lookForVehicle = s_garage.FindVehicleByLicense(lNumber);
 
-            if (lookForVehicle.m_Vehicle != null)
+            if (lookForVehicle.CurrVehicle != null)
             {
                 Console.WriteLine(lookForVehicle.ToString());
-                Console.WriteLine(lookForVehicle.m_Vehicle.VehicleToString());
+                Console.WriteLine(lookForVehicle.CurrVehicle.VehicleToString());
                 Console.WriteLine();
                 Console.WriteLine("Press 'enter' to continue");
                 Console.ReadLine();
