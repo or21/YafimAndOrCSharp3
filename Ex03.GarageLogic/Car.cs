@@ -15,22 +15,22 @@ namespace Ex03.GarageLogic
         /// <summary>
         /// Unique property string.
         /// </summary>
-        private readonly string r_colorQuestion = "Color";
+        private readonly string r_ColorQuestion = "Color";
 
         /// <summary>
         /// Unique property string.
         /// </summary>
-        private readonly string r_numberOfDoorsQuestion = "Number Of Doors";
+        private readonly string r_NumberOfDoorsQuestion = "Number Of Doors";
 
         /// <summary>
         /// Color of the car.
         /// </summary>
-        private eColor m_color;
+        private eColor m_Color;
 
         /// <summary>
         /// Number of doors.
         /// </summary>
-        private eDoors m_numberOfDoors;
+        private eDoors m_NumberOfDoors;
 
         /// <summary>
         /// Initializes a new instance of the Car class.

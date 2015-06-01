@@ -15,22 +15,22 @@ namespace Ex03.GarageLogic
         /// <summary>
         /// Unique property string.
         /// </summary>
-        private const string k_engineSizeQuestion = "Engine size";
+        private const string k_EngineSizeQuestion = "Engine size";
 
         /// <summary>
         /// Unique property string.
         /// </summary>
-        private readonly string r_licnseQuestion = "License type";
+        private readonly string r_LicnseQuestion = "License type";
 
         /// <summary>
         /// License type.
         /// </summary>
-        private eLicense m_license;
+        private eLicense m_License;
 
         /// <summary>
         /// Engine size.
         /// </summary>
-        private int m_engine;
+        private int m_Engine;
         
         /// <summary>
         /// Initializes a new instance of the Motor class.

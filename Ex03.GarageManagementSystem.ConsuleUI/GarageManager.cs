@@ -129,6 +129,9 @@ Press 'enter' to continue";
             }
         }
 
+        /// <summary>
+        /// Insert vehicle to garage.
+        /// </summary>
         private static void insertToGarageOpertaions()
         {
             string licenseNumber = getLicenseNumberFromUser();
