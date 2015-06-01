@@ -18,7 +18,7 @@ namespace Ex03.GarageManagementSystem.ConsuleUI
         /// <summary>
         /// Message when vehicle is already in garage.
         /// </summary>
-        private const string k_VehicleAlreadyInGarage = 
+        private const string k_VehicleAlreadyInGarage =
 @"This vehicle is already in the garage.
 The system will change it's state to 'In Process'";
 
@@ -39,7 +39,7 @@ Press 'enter' to continue";
         /// <summary>
         /// Inflate tires success message.
         /// </summary>
-        private const string k_AirBlowSuccess = 
+        private const string k_AirBlowSuccess =
 @"Air blowed successfuly
 Press 'enter' to continue";
 
@@ -47,12 +47,12 @@ Press 'enter' to continue";
         /// Nothing was typed message.
         /// </summary>
         private const string k_NPEerror = "Nothing was typed. Error is: ";
-        
+
         /// <summary>
         /// 'exit' to exit system.
         /// </summary>
         private const string k_ExitCode = "exit";
-        
+
         /// <summary>
         /// Instance of this class.
         /// </summary>
@@ -106,7 +106,7 @@ Press 'enter' to continue";
             try
             {
                 insertToGarageOpertaions();
-                }
+            }
             catch (ArgumentException ae)
             {
                 Console.WriteLine(k_AEerror, ae.Message);
@@ -150,7 +150,7 @@ Press 'enter' to continue";
                 fillParams(newVehicleInGarage);
                 s_Garage.AddVehicle(newVehicleInGarage);
                 Console.WriteLine("Vehicle inserted successfully. Press 'enter' to continue");
-        }
+            }
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ Press 'enter' to continue";
             string lNumber = Console.ReadLine();
 
             /* This method exists for future logic for owner name. */
-            
+
             return lNumber;
         }
 
@@ -239,27 +239,27 @@ Press 'enter' to continue";
         {
             try
             {
-            string licenseNumber = getLicenseNumberFromUser();
+                string licenseNumber = getLicenseNumberFromUser();
                 Garage.VehicleInGarage currentVehicle = s_Garage.FindVehicleByLicense(licenseNumber);
                 bool isRelevantEngine = currentVehicle.CurrVehicle.IsElectric
                     ? i_Operation == eOperation.LoadEnergy
                     : i_Operation == eOperation.LoadFuel;
-            if (isRelevantEngine)
-            {
-                string fuelType = null;
-                bool isFuel = i_Operation == eOperation.LoadFuel;
-                if (isFuel)
+                if (isRelevantEngine)
                 {
+                    string fuelType = null;
+                    bool isFuel = i_Operation == eOperation.LoadFuel;
+                    if (isFuel)
+                    {
                         fuelType = GetFuelFromUser();
-                        }
+                    }
 
-                float amountInFloat = getAmountToLoad();
+                    float amountInFloat = getAmountToLoad();
                     Garage.LoadPowerSourceForVehicle(currentVehicle.CurrVehicle, amountInFloat, fuelType);
-                Console.WriteLine(k_PowerSourceLoadingSuccess);
-            }
-            else
-            {
-                Console.WriteLine("The car engine doesn't match the required operation.");
+                    Console.WriteLine(k_PowerSourceLoadingSuccess);
+                }
+                else
+                {
+                    Console.WriteLine("The car engine doesn't match the required operation.");
                 }
             }
             catch (ValueOutOfRangeException vaore)
@@ -268,7 +268,7 @@ Press 'enter' to continue";
             }
             catch (ArgumentException ae)
             {
-                Console.WriteLine("Fuel type doesn't match to car fuel type");
+                Console.WriteLine(ae);
             }
             catch (NullReferenceException nre)
             {
@@ -290,7 +290,7 @@ Press 'enter' to continue";
             string fuelType = null;
             while (!isLegalFuel)
             {
-            Console.Write("Please enter fuel type to load: ");
+                Console.Write("Please enter fuel type to load: ");
                 fuelType = Console.ReadLine();
                 isLegalFuel = Fuel.IsValidFuelType(fuelType);
                 if (!isLegalFuel)
@@ -389,21 +389,21 @@ Press 'enter' to continue";
                 }
                 else
                 {
-            Console.WriteLine("The current vehicles in the garage are:");
+                    Console.WriteLine("The current vehicles in the garage are:");
                     Console.WriteLine();
                 }
 
                 Dictionary<string, string> licenseAndState = s_Garage.GetAllVehiclesByLicense(status);
-            int i = 1;
-            foreach (string licenseNumber in licenseAndState.Keys)
-            {
+                int i = 1;
+                foreach (string licenseNumber in licenseAndState.Keys)
+                {
                     Console.WriteLine(@"{0}: License number: {1}. Current state: {2}", i, licenseNumber, licenseAndState[licenseNumber]);
-                i++;
-            }
+                    i++;
+                }
 
-            Console.WriteLine();
-            Console.WriteLine("Press 'enter' to continue");
-            Console.ReadLine();
+                Console.WriteLine();
+                Console.WriteLine("Press 'enter' to continue");
+                Console.ReadLine();
             }
             catch (ArgumentException ae)
             {
@@ -442,9 +442,9 @@ Press 'enter' to continue";
         {
             Console.Write("Please enter the vehicle license number: ");
             string lNumber = Console.ReadLine();
-            
+
             /* this method exsits for future logic on license number */
-            
+
             return lNumber;
         }
 
@@ -538,7 +538,7 @@ Press 'enter' to continue";
         /// <returns>Valid string format</returns>
         private static string parseString(string i_StringToParse)
         {
-            return (i_StringToParse == string.Empty) ? null  : string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
+            return (i_StringToParse == string.Empty) ? null : string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
         }
 
         /// <summary>

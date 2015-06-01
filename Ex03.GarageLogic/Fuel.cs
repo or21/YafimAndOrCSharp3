@@ -32,7 +32,7 @@ namespace Ex03.GarageLogic
             bool isSameFuel = i_FuelType == this.r_FuelType;
             if (!isSameFuel)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Fuel type is not the same as vehicle fuel type.");
             }
 
             base.Load(i_EnergyToAdd);
