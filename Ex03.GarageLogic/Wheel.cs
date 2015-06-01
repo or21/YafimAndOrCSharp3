@@ -33,14 +33,7 @@ namespace Ex03.GarageLogic
         /// <param name="i_AirToAdd">Amount of air to add</param>
         public void Inflate(float i_AirToAdd)
         {
-            // TODO: Exception...
-            try
-            {
-                this.m_CurrentTirePressure += i_AirToAdd;
-            }
-            catch (ValueOutOfRangeException vore)
-            {
-            }
+            CurrentTirePressure += i_AirToAdd;
         }
 
         /// <summary>

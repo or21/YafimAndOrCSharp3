@@ -32,8 +32,8 @@ namespace Ex03.GarageLogic
                 case eVehicle.Motor:
                     this.r_Vehicle = new Motor();
                     break;
-                case eVehicle.Truk:
-                    this.r_Vehicle = new Truk();
+                case eVehicle.Truck:
+                    this.r_Vehicle = new Truck();
                     break;
 
                 /* Add more vehciles here */
@@ -56,9 +56,9 @@ namespace Ex03.GarageLogic
             Motor,
 
             /// <summary>
-            /// Vehicle Truk
+            /// Vehicle Truck
             /// </summary>
-            Truk,
+            Truck,
 
             /* add more supported vehicles here */
         }
