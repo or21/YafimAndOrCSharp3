@@ -407,7 +407,7 @@ Press 'enter' to continue";
 
         private static string parseString(string i_StringToParse)
         {
-            return string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
+            return (i_StringToParse == "") ? null  : string.Format(char.ToUpper(i_StringToParse[0]) + i_StringToParse.Substring(1).ToLower());
         }
 
         public enum eOperation
